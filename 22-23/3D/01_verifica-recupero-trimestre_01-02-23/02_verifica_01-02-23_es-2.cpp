@@ -32,8 +32,10 @@ int main(void)
     }
 
     // Creo un terzo vettore, avente grandezza pari alla somma della lunghezza delle stringhe acquisite.
-    int conc_length = string_1_length + string_2_length + 1;
+    int conc_length = string_1_length + string_2_length;
     char conc_string[conc_length];
+
+    cout << conc_length;
 
     for (int i = 0; i < string_1_length; i++)
     {
@@ -46,8 +48,8 @@ int main(void)
     }
 
     // Importante: ricordarsi di terminare correttamente la sequenza di caratteri.
-    conc_string[conc_length] = '\0';
-    cout << "Stringa concatenata: " << conc_string;
+    // conc_string[conc_length] = '\0';
+    cout << "Stringa concatenata: " << conc_string << "\n";
 
     return 0;
 }
