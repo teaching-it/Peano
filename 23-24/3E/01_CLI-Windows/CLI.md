@@ -84,11 +84,11 @@ La creazione di file nella Command Line Interface (CLI) può essere eseguita tra
 
     In questo caso, `>` è un operatore di redirezione che crea un nuovo file e vi scrive l'output del comando a sinistra, in questo caso il risultato di `type NUL` (che è nullo).
 
-#### 3.3.1 Inciso su Operatori di Redirezione
+### 3.4 Operatori di Redirezione
 
 Gli operatori di redirezione, come `>` e `>>`, sono utilizzati nella CLI per dirigere l'output di un comando verso una destinazione specifica, che può essere un file o un altro comando. La differenza principale tra `>` e `>>` è che `>` sovrascrive il file di destinazione, mentre `>>` aggiunge all'esistente senza cancellare il contenuto precedente. Questi operatori facilitano complesse operazioni di gestione file e contenuti.
 
-### 3.4 Copia di File tramite Command Line Interface
+### 3.5 Copia di File tramite Command Line Interface
 
 L'obiettivo è copiare un file, ad esempio `file.txt`, in una posizione specifica utilizzando il comando `copy`. La sintassi generale del comando è:
 
@@ -96,7 +96,7 @@ L'obiettivo è copiare un file, ad esempio `file.txt`, in una posizione specific
 copy [argomento 1: percorso file sorgente] [argomento 2: percorso di destinazione]`
 ```
 
-#### 3.4.1 Esempi di Utilizzo del Comando `copy`
+#### 3.5.1 Esempi di Utilizzo del Comando `copy`
 
 - **Copia del File in una Cartella Specifica**
     Per copiare `file.txt` all'interno del percorso `C:\Users\nomeutente\Pictures`, il comando sarà:
@@ -126,13 +126,13 @@ copy [argomento 1: percorso file sorgente] [argomento 2: percorso di destinazion
     
     Questo comando copia `file.txt` nella radice dell'unità `C:\`. È un metodo veloce per spostare file in posizioni di alto livello sull'unità disco.
 
-### 3.5 Utilizzo del Comando `mkdir` nella Command Line Interface
+### 3.6 Utilizzo del Comando `mkdir` nella Command Line Interface
 
 Il comando `mkdir` è usato per creare nuove cartelle in un sistema operativo basato su Windows o Unix/Linux. La sintassi base del comando è:
 
     mkdir [nome della cartella]
 
-#### 3.5.1 Esempio di Utilizzo
+#### 3.6.1 Esempio di Utilizzo
 
 - **Creazione di una Singola Cartella**
     Per creare una nuova cartella chiamata `new-folder` nella posizione corrente, il comando è:
@@ -149,11 +149,11 @@ Il comando `mkdir` è usato per creare nuove cartelle in un sistema operativo ba
 
 Il comando `mkdir` è fondamentale per organizzare i file in cartelle separate e mantenere un ambiente di lavoro ordinato e strutturato.
 
-### 3.6 Aprire File e Programmi dalla Command Line Interface
+### 3.7 Aprire File e Programmi dalla Command Line Interface
 
 L'apertura di file e l'avvio di programmi dalla Command Line Interface (CLI) è una funzionalità essenziale per una rapida interazione con il sistema operativo.
 
-#### 3.6.1 Apertura di File con Notepad
+#### 3.7.1 Apertura di File con Notepad
 
 Per aprire un file di testo con Notepad direttamente dalla CLI, il comando è:
 
@@ -162,23 +162,82 @@ Per aprire un file di testo con Notepad direttamente dalla CLI, il comando è:
 Ad esempio, per aprire un file chiamato `documento.txt` situato sul Desktop, si utilizzerebbe:
 notepad C:\Users\nomeutente\Desktop\documento.txt
 
-#### Avvio Generale di Programmi
+#### 3.7.2 Avvio Generale di Programmi
 
-- Per lanciare qualsiasi programma dalla CLI, si digita il nome eseguibile del programma seguito, se necessario, dal percorso del file o da altri parametri. Ad esempio:
-- Per avviare Microsoft Word, si digita:
+- Per lanciare qualsiasi programma dalla CLI, si digita il nome eseguibile del programma seguito (eventualmente preceduto da `start`), se necessario, dal percorso del file o da altri parametri. Ad esempio:
+    Per avviare un browser web come Google Chrome:
 
-  ```
-  winword
-  ```
-
-- Per avviare un browser web come Google Chrome:
-
-  ```
-  chrome
-  ```
+    ```
+    start chrome
+    ```
 
 - Per eseguire un programma specifico dal suo percorso, si inserisce il percorso completo dell'eseguibile, come:
 
-  ```
-  C:\Path\To\Your\Program.exe
-  ```
+    ```
+    start C:\Path\To\Your\Program.exe
+    ```
+
+### 3.8 Comando Echo
+
+Il comando `echo` è utilizzato per visualizzare linee di testo o variabili specifiche nella command line. È molto utile per mostrare messaggi all'utente o per il debug.
+
+### 3.9 Blocco Condizionale IF-THEN-ELSE
+
+Il blocco condizionale `IF-THEN-ELSE` permette di eseguire differenti comandi in base al risultato di una condizione specifica. È una struttura fondamentale per la creazione di script .bat più complessi e funzionali.
+
+#### 3.9.1 Esempio di Utilizzo
+
+Questo blocco controlla se il file `file.txt` esiste. Se esiste, stampa "Il file esiste"; altrimenti, stampa "Il file non esiste".
+
+    IF EXIST file.txt (
+        echo Il file esiste
+    ) ELSE (
+        echo Il file non esiste
+    )
+
+### 3.10 Commenti all'Interno dello Script
+
+I commenti sono usati per annotare lo script e renderlo più leggibile. In Batch, i commenti possono essere aggiunti usando `::` o `REM`.
+
+#### 3.10.1 Esempio di Utilizzo
+
+    :: Questo è un commento
+    REM Questo è un altro commento
+
+ChatGPT
+Ecco un piccolo paragrafo in Markdown che spiega il comando set var e fornisce un breve inciso sulle variabili nella Command Line Interface (CLI):
+
+markdown
+Copy code
+
+### 3.11 Dichiarazione Variabili: Uso del Comando `set var`
+
+Il comando `set` nella CLI è utilizzato per creare o modificare variabili d'ambiente. Quando usato nella forma `set var=value`, assegna il valore `value` alla variabile `var`.
+
+#### 3.11.1 Esempio di Utilizzo
+
+    set var=Hello
+
+Questo comando assegna la stringa "Hello" alla variabile `var`. D'ora in poi, ogni volta che si fa riferimento a `%var%` nello script, verrà sostituito con "Hello". **Nota bene:** la variabile è referenziabile utilizzado il carattere `%` prima e dopo il nome della variabile stessa.
+
+#### 3.11.2 Inciso sulle Variabili nella CLI
+
+Le variabili nella CLI di Windows non sono tipizzate, il che significa che non richiedono una dichiarazione di tipo (come int, string, ecc.) prima dell'uso. Possono contenere una varietà di dati, inclusi numeri, testo e percorsi. Questa flessibilità le rende strumenti potenti ma richiede attenzione nella loro gestione, soprattutto per quanto riguarda la loro espansione e la distinzione tra variabili locali e variabili d'ambiente (di cui parleremo, eventualmente, in seguito).
+
+#### 3.11.3 Uso dei Doppi Apici in uno Script `.bat`
+
+L'utilizzo dei doppi apici attorno alle variabili e ai loro valori in uno script `.bat` è una pratica comune che può prevenire errori e migliorare la leggibilità. Di seguito sono illustrate alcune situazioni in cui l'uso dei doppi apici è consigliato:
+
+1. **Prevenzione di Errori**
+
+    Quando si confronta una variabile con un valore, l'uso dei doppi apici assicura che l'espressione rimanga valida anche se la variabile è vuota. Ad esempio, `if "%var%"=="Hello"` funzionerà correttamente anche se `%var%` è vuota, mentre `if %var%==Hello` potrebbe causare errori.
+
+2. **Gestione di Spazi e Caratteri Speciali**
+
+    Se il valore della variabile include spazi o caratteri speciali, i doppi apici sono necessari. Questo garantisce che l'intero valore sia trattato come un singolo elemento. Per esempio, `if "%var%"=="Hello World"` è corretto, ma `if %var%==Hello World` risulterebbe in un errore.
+
+3. **Coerenza e Leggibilità**
+
+    L'uso dei doppi apici può anche migliorare la coerenza e la leggibilità dello script, specialmente in quelli più complessi.
+
+L'utilizzo dei doppi apici attorno alle variabili e ai loro valori, quindi, è una buona pratica per garantire che uno script `.bat` funzioni correttamente in vari contesti, specialmente in presenza di valori vuoti, spazi, o caratteri speciali.
