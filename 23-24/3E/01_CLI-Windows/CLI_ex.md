@@ -46,7 +46,7 @@ IF EXIST C:\Users\nomeutente\Desktop\pippo.txt (
     :: Copio il file nel percorso di destinazione (potrebbe altrimenti essere opportuno spostarlo)
     copy pippo.txt C:\Users\nomeutente\Desktop\
 
-    :: Soluzione no. 5
+    :: Soluzione no. 6
     :: Precondizione: si suppone che il percorso C:\Users\nomeutente\Desktop
     :: sia effettivamente già esistente (poiché percorso di "sistema")
     :: Accedo alla cartella richiesta
@@ -55,7 +55,7 @@ IF EXIST C:\Users\nomeutente\Desktop\pippo.txt (
     echo Hello World >> pippo.txt
 )
 ```
-**NB. 1: La soluzione no. 5 è probabilmente la più attinente alle richieste dell'esercizio.**
+**NB. 1: La soluzione no. 6 è probabilmente la più attinente alle richieste dell'esercizio.**
 
 **NB. 2: Come potete notare, non esiste un'univoca soluzione corretta, bensì una vasta gamma di possibilità che possono tutte condurre ad una soluzione. Certamente, alcune soluzioni risultano più eleganti/efficaci/efficienti di altre.**
 
@@ -73,3 +73,95 @@ PLUS: Creare un nuovo file con il contenuto ordinato.
 
 Dichiarare una variabile dal nome "var" e valorizzarla con il testo "Hello".
 Se il contenuto della variabile è "Hello" (IF-ELSE) creare la cartella Hello. Altrimenti stampare a video "Hello World".
+
+### Ex 1
+
+All’interno di un file di testo denominato cognomi.txt e posizionato all’interno del percorso C:\Users\nomeutente\Desktop\es_17-nov-23, inserire 5 stringhe di testo corrispondenti a 5 cognomi (es: Rossi, Bianchi, Verdi).
+Verificare che il percorso esista, eventualmente creare le cartelle necessarie.
+Successivamente, mostrare a video il contenuto del file ordinato in ordine alfabetico.
+
+PLUS: Creare un nuovo file con il contenuto ordinato.
+
+**Possibile soluzione no. 1**.
+
+In questa soluzione si utilizzano percorsi assoluti, ovvero percorsi completi (estesi/assoluti) a partire dall'unità radice C.
+
+```
+REM Verifica dell'esistenza della cartella e creazione, se necessario
+IF NOT EXIST C:\Users\nomeutente\Desktop\es_17-nov-23 (
+    mkdir C:\Users\nomeutente\Desktop\es_17-nov-23
+)
+
+REM Creazione del file cognomi.txt e inserimento dei cognomi
+echo Rossi>Bianchi>Verdi>Neri>Gialli> C:\Users\nomeutente\Desktop\es_17-nov-23\cognomi.txt
+
+REM Ordinamento del contenuto e visualizzazione
+echo Contenuto ordinato del file cognomi.txt:
+sort C:\users\nomeutente\Desktop\es_17-nov-23\cognomi.txt
+
+REM Creazione di un nuovo file con contenuto ordinato
+sort C:\users\nomeutente\Desktop\es_17-nov-23\cognomi.txt > C:\users\nomeutente\Desktop\es_17-nov-23\sorted_cognomi.txt
+echo Il file ordinato è stato salvato come sorted_cognomi.txt
+```
+
+**Possibile soluzione no. 2**.
+
+```
+REM Cambia la directory corrente
+cd C:\Users\nomeutente\Desktop\
+
+REM Verifica dell'esistenza della cartella e creazione, se necessario
+IF NOT EXIST es_17-nov-23 (
+    mkdir es_17-nov-23
+)
+
+REM Cambia la directory nella cartella creata
+cd es_17-nov-23
+
+REM Creazione del file cognomi.txt e inserimento dei cognomi
+echo Rossi > cognomi.txt
+echo Bianchi >> cognomi.txt
+echo Verdi >> cognomi.txt
+echo Neri >> cognomi.txt
+echo Gialli >> cognomi.txt
+
+REM Ordinamento del contenuto e visualizzazione
+echo Contenuto ordinato del file cognomi.txt:
+sort cognomi.txt
+
+REM Creazione di un nuovo file con contenuto ordinato
+sort cognomi.txt > sorted_cognomi.txt
+echo Il file ordinato è stato salvato come sorted_cognomi.txt
+```
+
+### Ex 2
+
+Dichiarare una variabile dal nome "var" e valorizzarla con il testo "Hello".
+Se il contenuto della variabile è "Hello" (IF-ELSE) creare la cartella Hello. Altrimenti stampare a video "Hello World".
+
+```
+REM Dichiarazione della variabile var e assegnazione del valore
+set var=Hello
+
+REM Controllo del contenuto della variabile
+IF "%var%"=="Hello" (
+    mkdir Hello
+    echo Cartella "Hello" creata.
+) ELSE (
+    echo Hello World
+)
+```
+
+Si rimanda alla lettura del materiale didattico rispetto all'uso dei doppi apici `"` nella riga di codice in cui è coinvolto il costrutto `IF` e quindi la valutazione del contenuto di una variabile.
+
+## Esercizo assegnati per casa, da svolgere per il 25 novembre 2023
+
+L'obiettivo è creare uno script che esegua automaticamente il **backup** (copia di sicurezza) di tutti i files con estensione `.txt` contenuti all'interno di un determinato percorso.
+
+Lo script dovrà:
+
+1. Dopo aver controllato che il percorso non esista già, creare la cartella `C:\Users\nomeutente\Desktop\Backup`.
+2. Generare almeno 3 files di testo, con estensione `
+.txt` e contenuto a scelta, all'interno di un percorso anch'esso a scelta (ma differente da quello indicato al precedente punto 1).
+3. Copiare tutti i files di testo (di cui al precedente punto 2) all'interno della cartella `Backup` creata in precedenza. **Importante:** La copia dovrà essere svolta utilizzando un unico comando (copia di tutti i files con una determinata estensione).
+4. Rinominare la cartella `Backup` con la data odierna.
