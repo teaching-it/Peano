@@ -82,7 +82,68 @@ Successivamente, mostrare a video il contenuto del file ordinato in ordine alfab
 
 PLUS: Creare un nuovo file con il contenuto ordinato.
 
-**Possibile soluzione no. 1**.
+**Possibile soluzione no. 1 (vista in classe)**
+
+```
+REM Presuppongo che il percorso C:\Users\nomeutente\Desktop
+REM già esista, poiché percorso di DEFAULT del Sistema Operativo Windows.
+
+REM Poiché non conosco il percorso all'interno del quale
+REM verrà eseguito lo script corrente, devo sincerarmi
+REM che il percorso di partenza sia effettivamente
+REM C:\Users\nomeutente\Desktop
+
+cd C:\Users\nomeutente\Desktop
+
+REM Due modalità di utilizzo del blocco condizionale
+
+REM Modalità 1.
+
+IF EXIST es_17-nov-23 (
+    REM Ramo TRUE del blocco IF
+) ELSE (
+    REM Ramo FALSE del blocco IF
+    mkdir es_17-nov-23
+)
+
+REM Modalità 2.
+
+IF NOT EXIST es_17-nov-23 (
+    REM Ramo TRUE del blocco IF
+    mkdir es_17-nov-23
+) ELSE (
+    REM Ramo FALSe del blocco IF
+)
+
+cd es_17-nov-23
+
+REM Creo il file cognomi.txt
+
+REM Questo comando è superfluo, poiché i comandi successivi
+REM vanno comunque a generare il file di testo
+type NUL > cognomi.txt
+
+echo Cecchi >> cognomi.txt
+echo Brugnoli>> cognomi.txt
+echo Carcasci>> cognomi.txt
+echo Cappelli>> cognomi.txt
+echo Cascio >> cognomi.txt
+
+REM Sintassi alternativa per inserimento di righe di testo all'interno
+REM di un file
+echo Brugnoli>>Carcasci>>Cappelli>>cognomi.txt
+
+REM Il comando sort ordina in ordine alfabetico il contenuto del file
+sort cognomi.txt
+
+REM Con l'operatore di redirezione ">" redirigo l'output del comando
+REM all'interno di un altro file.
+sort cognomi.txt > cognomi_ordinati.txt
+
+pause
+```
+
+**Possibile soluzione no. 2**.
 
 In questa soluzione si utilizzano percorsi assoluti, ovvero percorsi completi (estesi/assoluti) a partire dall'unità radice C.
 
@@ -104,7 +165,7 @@ sort C:\users\nomeutente\Desktop\es_17-nov-23\cognomi.txt > C:\users\nomeutente\
 echo Il file ordinato è stato salvato come sorted_cognomi.txt
 ```
 
-**Possibile soluzione no. 2**.
+**Possibile soluzione no. 3**.
 
 ```
 REM Cambia la directory corrente
