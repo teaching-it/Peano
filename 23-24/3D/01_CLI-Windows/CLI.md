@@ -242,3 +242,13 @@ L'utilizzo dei doppi apici attorno alle variabili e ai loro valori in uno script
     L'uso dei doppi apici può anche migliorare la coerenza e la leggibilità dello script, specialmente in quelli più complessi.
 
 L'utilizzo dei doppi apici attorno alle variabili e ai loro valori, quindi, è una buona pratica per garantire che uno script `.bat` funzioni correttamente in vari contesti, specialmente in presenza di valori vuoti, spazi, o caratteri speciali.
+
+### 3.12 Uso del Wildcard `*` 
+
+Il carattere jolly `*` (asterisco) è ampiamente utilizzato nella CLI per rappresentare uno o più caratteri in un nome di file o di cartella. Questo permette di selezionare gruppi di file o cartelle che condividono un pattern comune nel loro nome.
+
+#### 3.12.1 Esempio di Utilizzo con il Comando `copy`
+
+    copy C:\Users\mariorossi\Documents\*.txt D:\Backup
+
+In questo esempio, il comando copia tutti i file con estensione `.txt` dalla cartella `C:\Users\mariorossi\Documents\` sulla partizione `C:` alla cartella `Backup` sulla partizione `D:`. Il wildcard `*` consente di selezionare tutti i file che terminano con `.txt`, indipendentemente dal loro nome.

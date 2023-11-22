@@ -141,3 +141,48 @@ Lo script dovrà:
 3. Copiare tutti i files di testo (di cui al precedente punto 2) all'interno della cartella `Backup` creata in precedenza. **Importante:** La copia dovrà essere svolta utilizzando un unico comando (copia di tutti i files con una determinata estensione).
 4. Rinominare la cartella `Backup` con la data odierna.
 
+#### Possibile soluzione
+
+    REM Poiché percorso di default del Sistema Operativo
+    REM posso presupporre che il percorso già esista.
+    REM Presuppongo, inoltre, che all'interno del Sistema
+    REM Operativo esista l'utente mariorossi.
+
+    cd C:\Users\mariorossi\Desktop\
+
+    IF NOT EXIST Backup (
+        mkdir Backup
+        REM verrà creata la cartella C:\Users\pardini\Desktop\Backup
+    )
+
+    REM Genero 3 files di testo, con contenuto a scelta, all'interno del percorso REM C:\Users\mariorossi\Desktop\files
+
+    mkdir files
+    cd files
+
+    echo "pippo" >> pippo.txt
+    echo "pluto" >> pluto.txt
+    echo "topolino" >> topolino.txt
+
+    REM Ricorda che, questo momento, sono posizionato all'interno del percorso
+    REM C:\Users\pardini\Desktop\files
+
+    REM Soluzione no. 1
+    REM copy [percorso file sorgente] [percorso di destinazione]`
+        copy *.txt                    ..\Backup
+
+    REM Soluzione no. 2
+    copy *.txt  C:\Users\pardini\Desktop\Backup
+
+    cd ..
+
+    REM Rinominazione della cartella con la data "odierna"
+    REM Soluzione no. 1 ("corretta" ma non elegante)
+    ren Backup 18-11-2023
+
+    REM Soluzione no. 2
+    REM Obiettivo: trovare il modo di estrapolare la data odierna
+    REM utilizzando un qualche comando della CLI e, eventualmente,
+    REM valorizzando una variabile.
+
+    pause
