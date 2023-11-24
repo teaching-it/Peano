@@ -61,3 +61,4 @@ Particolare è la terminologia utilizzata da Cisco rispetto al NAT. Come abbiamo
     Destination filename [startup-config]?
     Building configuration...
     [OK]
+
