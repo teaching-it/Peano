@@ -35,7 +35,7 @@ Successivamente, è necessario definire quale delle interfacce disponibili sul r
     Router(config-if)#ip nat outside
     Router(config-if)#exit
 
-## Step 3
+## Step 3: Regola di traduzione## Step 3
 
 A questo punto non ci rimane che definire la regola di traduzione (anche detta di traslazione) al fine di *mappare* l'indirizzo ip pubblico 15.0.0.6 su di uno specifico indirizzo ip privato 192.168.1.253.
 
@@ -47,10 +47,17 @@ Il comando parametrizzato rispetto alla nostra specifica configurazione è:
 
     Router(config)#ip nat inside source static 192.168.1.253 15.0.0.6
 
-## Step 4 (diagnostica)
+## Step 4: Diagnostica
 
     Router#show ip nat translations
     Pro  Inside global     Inside local       Outside local      Outside global
     ---  15.0.0.6          192.168.1.253      ---                ---
 
 Particolare è la terminologia utilizzata da Cisco rispetto al NAT. Come abbiamo visto in precedenza, le interfacce debbono essere esplicitamente contrassegnate come inside ed outside e, per tale motivo, la lettura della translations table potrebbe quindi risultare fuorviante. Ciò che abbiamo precedentemente considerato come interfaccia outside (che si affaccia quindi sull'Internet) all'interno della translations table è altresì definita Inside global. L'interfaccia precedentemente contrassegnata come inside, prende invece il nome di Inside local.
+
+## Step 5: Salvataggio del file di configurazione
+
+    Router#copy running-config startup-config
+    Destination filename [startup-config]?
+    Building configuration...
+    [OK]
