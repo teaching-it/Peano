@@ -20,9 +20,9 @@ Nel nostro caso, il router modello 2901 offre di default 3 interfacce GbE (Gigab
 
 ## Step 2
 
-Successivamente, è necessario definire quale delle interfacce disponibili sul router è effettivamente connessa al lato public, ovvero al lato ouside. Nel caso specifico abbiamo scelto la GigabitEthernet0/2.
+Successivamente, è necessario definire quale delle interfacce disponibili sul router è effettivamente connessa al lato public, ovvero al lato ouside. Nel caso specifico abbiamo scelto la GigabitEthernet0/1.
 
-    Router(config)#interface Gig0/2
+    Router(config)#interface Gig0/1
     Router(config-if)#ip nat ?
     inside   Inside interface for address translation
     outside  Outside interface for address translation
