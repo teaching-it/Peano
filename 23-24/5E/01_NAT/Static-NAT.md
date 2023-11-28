@@ -35,7 +35,7 @@ Successivamente, è necessario definire quale delle interfacce disponibili sul r
     Router(config-if)#ip nat outside
     Router(config-if)#exit
 
-## Step 3: Regola di traduzione## Step 3
+## Step 3: Regola di traduzione
 
 A questo punto non ci rimane che definire la regola di traduzione (anche detta di traslazione) al fine di *mappare* l'indirizzo ip pubblico 2.0.0.2 su di uno specifico indirizzo ip privato 192.168.1.253.
 
