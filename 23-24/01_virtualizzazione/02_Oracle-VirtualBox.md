@@ -24,7 +24,7 @@ Supporta diverse configurazioni di rete, permettendo alle macchine virtuali di c
 
 Offre la possibilità di salvare gli stati correnti delle macchine virtuali (snapshot), che possono essere utilizzati per ripristinare il sistema a quel punto specifico. È anche possibile clonare intere macchine virtuali.
 
-### 6 Supporto per Dispositivi USB e Periferiche
+### 6. Supporto per Dispositivi USB e Periferiche
 
 Permette di collegare dispositivi USB e altre periferiche direttamente alle macchine virtuali.
 
