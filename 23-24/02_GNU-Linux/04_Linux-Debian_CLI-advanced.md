@@ -54,7 +54,7 @@ user@linux:~$ netstat -na
 
     user@linux:~$ netstat -nap | grep apache2
 
-**`netstat -nap | grep apache2`** mostra le connessioni di rete associate ad Apache2, inclusi i PID dei processi. Questo comando richiede privilegi di root per mostrare i
+**`netstat -nap | grep apache2`** mostra le connessioni di rete associate ad Apache2, inclusi i PID dei processi.
 
 ## Wireshark
 
