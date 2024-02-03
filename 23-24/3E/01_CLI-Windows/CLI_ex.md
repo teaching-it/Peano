@@ -215,7 +215,7 @@ IF "%var%"=="Hello" (
 
 Si rimanda alla lettura del materiale didattico rispetto all'uso dei doppi apici `"` nella riga di codice in cui è coinvolto il costrutto `IF` e quindi la valutazione del contenuto di una variabile.
 
-## Esercizo assegnati per casa, da svolgere per il 25 novembre 2023
+## Esercizio assegnati per casa, da svolgere per il 25 novembre 2023
 
 L'obiettivo è creare uno script che esegua automaticamente il **backup** (copia di sicurezza) di tutti i files con estensione `.txt` contenuti all'interno di un determinato percorso.
 
@@ -226,3 +226,54 @@ Lo script dovrà:
 .txt` e contenuto a scelta, all'interno di un percorso anch'esso a scelta (ma differente da quello indicato al precedente punto 1).
 3. Copiare tutti i files di testo (di cui al precedente punto 2) all'interno della cartella `Backup` creata in precedenza. **Importante:** La copia dovrà essere svolta utilizzando un unico comando (copia di tutti i files con una determinata estensione).
 4. Rinominare la cartella `Backup` con la data odierna.
+
+**Soluzione proposta e commentata in classe**
+
+```
+
+REM Poiché percorso di default del Sistema Operativo
+REM posso presupporre che il percorso già esista.
+REM Presuppongo, inoltre, che all'interno del Sistema
+REM Operativo esista un utente che si chiama nomeutente.
+
+cd C:\Users\nomeutente\Desktop\
+
+IF NOT EXIST Backup (
+    mkdir Backup
+    REM verrà creata la cartella C:\Users\nomeutente\Desktop\Backup
+)
+
+REM Genero 3 files di testo, con contenuto a scelta, all'interno
+REM del percorso C:\Users\nomeutente\Desktop\files
+
+mkdir files
+cd files
+
+echo pippo >> pippo.txt
+echo pluto  >> pluto.txt
+echo topolino >> topolino.txt
+
+REM In questo momento sono posizionato all'interno del percorso
+REM C:\Users\pardini\Desktop\files
+
+REM Soluzione no. 1
+REM copy [percorso file sorgente] [percorso di destinazione]`
+    copy *.txt                    ..\Backup
+
+REM Soluzione no. 2
+copy *.txt  C:\Users\pardini\Desktop\Backup
+
+cd ..
+
+REM Rinominazione della cartella con la data odierna
+REM Soluzione no. 1 ("corretta" ma non elegante)
+ren Backup 18-11-2023
+
+REM Soluzione no. 2
+REM Obiettivo: trovare il modo di estrapolare la data odierna
+REM utilizzando un qualche comando della CLI e, eventualmente,
+REM valorizzando una variabile.
+
+pause
+
+```
