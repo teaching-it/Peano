@@ -27,4 +27,5 @@ GNU/Linux può essere eseguito su una vasta gamma di hardware, dai microcomputer
 Essendo open source, GNU/Linux gode del supporto di una vasta comunità globale di sviluppatori e utenti. Esistono numerosi forum, documentazione online, e gruppi di supporto che aiutano gli utenti a risolvere problemi e a imparare ad utilizzare il sistema.
 
 ## Distribuzioni
+
 Esistono centinaia di distribuzioni GNU/Linux, ciascuna progettata per soddisfare specifiche esigenze di utenti diversi. Alcune delle più note includono Ubuntu, Debian, Fedora, CentOS, e Arch Linux. Ogni distribuzione offre una diversa selezione di software preinstallato, una diversa gestione dei pacchetti e opzioni di configurazione, permettendo agli utenti di scegliere quella più adatta alle loro necessità.
