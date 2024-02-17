@@ -24,6 +24,7 @@ Debian supporta un'ampia gamma di architetture hardware, inclusi PC, Mac, ARM e 
 
 La comunità Debian è ampia e attiva, offrendo supporto tramite mailing list, forum, canali IRC e altri mezzi. La documentazione è estensiva e ben mantenuta, rendendo più facile per gli utenti trovare le informazioni di cui hanno bisogno.
 
+
 ## Momenti Chiavi del Processo di Installazione
 
 L'installazione di Debian GNU/Linux è un processo che può variare in complessità a seconda delle esigenze dell'utente, dalla configurazione di un semplice desktop a quella di un server avanzato.
