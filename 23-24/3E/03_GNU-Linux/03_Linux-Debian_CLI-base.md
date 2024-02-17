@@ -66,6 +66,18 @@ Il comando `ls -al` estende la funzionalità di `ls`, fornendo un elenco dettagl
 
 Il comando `cat` (abbreviazione di *concatenate*) è utilizzato in Linux per visualizzare il contenuto di uno o più file.
 
+    user@linux:~$ touch file.txt
+
+`touch` è comunemente usato per creare rapidamente un nuovo file vuoto. Il comando creare un file denominato `file.txt` all'interno del percorso corrente.
+
+    user@linux:~$ cp file.txt /tmp
+
+Il comando permette di copiare il file `file.txt` in un'altra directory (`/tmp` in questo caso).
+
+    user@linux:~$ cp -r dir /tmp
+
+Affinché sia possibile copiare un'intera directory è necessario utilizzare l'opzione `/-r`. Il comando copierà la cartella `dir` (posizionata nel percorso corrente) all'interno della cartella `/tmp`.
+
 ### Breve inciso sull'organizzazione del File System in Linux
 
 L'organizzazione del file system in Linux segue una struttura gerarchica, iniziando dalla directory radice **/**. Questa struttura permette di organizzare e separare i file in diverse directory per una gestione più intuitiva e sicura del sistema. Alcune delle directory più comuni includono:

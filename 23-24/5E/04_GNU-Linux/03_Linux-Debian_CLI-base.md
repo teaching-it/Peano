@@ -47,7 +47,7 @@ Ricorda che, quando si installa un pacchetto software su Linux, spesso ha bisogn
 Questo comando conduce alla directory specificata, in questo caso `/home/nomeutente`. Il percorso è espresso in termini *assoluti*, ovvero a partire dalla directory radice `/`.
 
     user@linux:~$ cd Desktop
-
+    
 Il comando permette di accede alla directory Desktop contenuta nel percorso corrente. In questo caso, il percorso è espresso in termini *relativi*, partendo dalla directory in cui ci si trova (ovvero la home directory dell'utente corrente, identificata dal simbolo `~`)
 
     user@linux:~/Desktop$ cd ..
@@ -65,6 +65,18 @@ Il comando `ls -al` estende la funzionalità di `ls`, fornendo un elenco dettagl
     user@linux:~$ cat file.txt
 
 Il comando `cat` (abbreviazione di *concatenate*) è utilizzato in Linux per visualizzare il contenuto di uno o più file.
+
+    user@linux:~$ touch file.txt
+
+`touch` è comunemente usato per creare rapidamente un nuovo file vuoto. Il comando creare un file denominato `file.txt` all'interno del percorso corrente.
+
+    user@linux:~$ cp file.txt /tmp
+
+Il comando permette di copiare il file `file.txt` in un'altra directory (`/tmp` in questo caso).
+
+    user@linux:~$ cp -r dir /tmp
+
+Affinché sia possibile copiare un'intera directory è necessario utilizzare l'opzione `/-r`. Il comando copierà la cartella `dir` (posizionata nel percorso corrente) all'interno della cartella `/tmp`.
 
 ### Breve inciso sull'organizzazione del File System in Linux
 
