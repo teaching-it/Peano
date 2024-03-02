@@ -30,8 +30,16 @@ fi
 
 ## Ex 2
 
-Creare un file contenente il testo "Hello World!" all'iterno della cartella /tmp. 
+Creare un file contenente il testo "Hello World!" all'interno della cartella /tmp. 
 
 Creare una nuova cartella dal nome "Pippo" all’interno del percorso /home/nomeutente/Desktop. 
 
-Copiare il file creato all’interno di quest’ultimo percorso avendo dura di verificare che il percorso esista.
+Copiare il file creato all’interno di quest’ultimo percorso avendo cura di verificare che il percorso esista.
+
+## Ex 3
+
+Creare le cartelle *files* e *backup*  all'interno della propria home directory.
+
+All'interno della cartella *backup*, mediante un ciclo for, creare 10 file aventi per nome *"file-k"*, dove *k* è il valore incrementale della variabile di controllo.
+
+Copiare tutti i file creati dalla cartella *files* alla cartella *backup*.
