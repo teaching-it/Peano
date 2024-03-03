@@ -106,7 +106,7 @@ Per salvare l'output di un comando in una variabile in Bash, si utilizza la sint
 output_cmd=$(comando)
 ```
 
-Ad esempio, per memorizzare all'interno di una variabile l'esito del comando `ls` e stamparlo a video referenziando il contenuto della variabile stessa (occhio all'uso del carattere `$`):
+Ad esempio, per memorizzare all'interno di una variabile l'esito del comando `ls` e successivamente stamparlo a video (occhio all'uso del carattere `$`):
 
 ```bash
 output_ls=$(ls)
@@ -115,7 +115,7 @@ echo $output_ls
 
 #### Tip 2
 
-Il pipe, indicato dal simbolo `|`, è un operatore molto potente nei sistemi operativi Unix e Linux che permette di dirigere l'output  di un comando come input per un altro comando. 
+Il pipe, indicato dal simbolo `|`, è un operatore molto potente nei sistemi operativi  Linux che permette di dirigere l'output  di un comando come input per un altro comando. 
 
 Un esempio classico di utilizzo del pipe è il filtraggio dell'output di un comando attraverso il comando `grep`:
 
@@ -129,11 +129,11 @@ Tornando all'esercizio, potrebbe valer la pena filtrare l'output dei comandi `fr
 
 #### Tip 3
 
-Adesso che potenzialmente dispongo di due variabili con il contenuto di interesse, non mi resta che applicare un ulteriore filtro al fine di estrarre precisamente il dato richiesto.
+Adesso che potenzialmente dispongo di due variabili con il contenuto di interesse, non mi resta che applicare un ulteriore filtro.
 
-`awk` è un potente linguaggio di programmazione utilizzato per la manipolazione dei dati in Linux. Una delle operazioni più comuni in `awk` è stampare specifiche colonne/parole/token di un testo in input. Ad esempio, il seguente script stamperà a video `token-1 token-2 bla`, ovvero la prima, la seconda e la quinta parola.
+`awk` è un potente linguaggio di programmazione utilizzato per la manipolazione dei dati in Linux. Una delle operazioni più comuni in `awk` è stampare specifiche colonne/parole/token di un testo in input. Ad esempio, il seguente script avrà come esito la stampa a video di `token-1 token-2 bla`, ovvero la prima, la seconda e la quinta parola del testo.
 
 ```bash
 text="token-1 token-2 token-3 token-4 bla bla"
-echo $text | awk '{print $1, $5}'
+echo $text | awk '{print $1, $2, $5}'
 ```
