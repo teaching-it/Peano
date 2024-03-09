@@ -137,3 +137,35 @@ Adesso che potenzialmente dispongo di due variabili con il contenuto di interess
 text="token-1 token-2 token-3 token-4 bla bla"
 echo $text | awk '{print $1, $2, $5}'
 ```
+
+### Una possibile soluzione (svolta in classe in data 09/03/24)
+
+```bash
+# !/bin/bash
+
+# Il comando free mostra il quantitativo di memoria RAM usata e disponibile
+
+# Comando originale
+free --mega
+
+# Salva l'output del comando free --mega all'interno della variabile output_cmd
+
+# output_cmd=$(free --mega)
+# echo $output_cmd
+
+# Filtra l'output del comando rispetto ad una determinata keyword
+
+echo
+free --mega | grep "Mem"
+
+# Di nuovo il comando precedente, ma con l'aggiunta di un ulteriore elemento alla "pipeline": awk seleziona e visualizza oil 4° token della stringa di testo
+
+echo
+free --mega | grep "Mem" | awk '{print $4}'
+
+# Posso adesso inserire l'intero comando di outout all'interno di una variabile
+mem_value=$(free --mega | grep "Mem" | awk '{print $4}')
+
+echo
+echo "Il quantitativo di memoria RAM disponibile è (in MB): $mem_value"
+```
