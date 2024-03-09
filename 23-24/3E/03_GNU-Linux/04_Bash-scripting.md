@@ -25,7 +25,7 @@ Rispetto al punto 1, come creare/salvare un file di testo direttamente da linea 
 
 Questo comando apre l'editor Nano con un nuovo file chiamato `01_hello-world.sh` all'interno del percorso corrente.
 
-Dopo aver inserito il testo desiderato, premi `Ctrl + O` per salvare il file. Premi `Invio` per confermare il nome del file. Successivamente, premi `Ctrl + X` per uscire da Nano.
+Dopo aver inserito il testo desiderato, premi `Ctrl + O` per salvare il file. Premi `Invio` per confermare il nome del file. Successivamente, premi `Ctrl + X` per uscire da Nano.zz
 
 ### Redirezione in Bash: `>` *vs* `>>`
 
