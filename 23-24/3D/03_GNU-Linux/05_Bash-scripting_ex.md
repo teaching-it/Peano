@@ -175,3 +175,11 @@ disk_space=$(df -h / | grep "/" | awk '{print $4}')
 echo
 echo "Lo spazio su disco disponibile nella partizione / è (in MB): $disk_space"
 ```
+
+## Ex 5
+
+Modificare/ampliare l'esercizio precedente aggiungendo:
+
+1. Monitoraggio dell'utilizzo della CPU. Utilizza il comando `top` per ottenere le statistiche correnti dell'uso della CPU. Filtra l'output per ottenere solo la linea che mostra l'uso della CPU, poi usa il comando `awk` per estrarre il valore percentuale dell'uso della CPU.
+
+2. Tempo di uptime del sistema, utilizzando il comando `uptime`.
