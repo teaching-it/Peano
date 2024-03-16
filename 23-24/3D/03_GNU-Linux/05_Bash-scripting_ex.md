@@ -168,4 +168,10 @@ mem_value=$(free --mega | grep "Mem" | awk '{print $4}')
 
 echo
 echo "Il quantitativo di memoria RAM disponibile è (in MB): $mem_value"
+
+# Comando per lo spazio su disco disponibile nella partizione /
+disk_space=$(df -h / | grep "/" | awk '{print $4}')
+
+echo
+echo "Lo spazio su disco disponibile nella partizione / è (in MB): $disk_space"
 ```
