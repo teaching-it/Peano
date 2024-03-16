@@ -183,3 +183,135 @@ Modificare/ampliare l'esercizio precedente aggiungendo:
 1. Monitoraggio dell'utilizzo della CPU. Utilizza il comando `top` per ottenere le statistiche correnti dell'uso della CPU. Filtra l'output per ottenere solo la linea che mostra l'uso della CPU, poi usa il comando `awk` per estrarre il valore percentuale dell'uso della CPU.
 
 2. Tempo di uptime del sistema, utilizzando il comando `uptime`.
+
+### Tips and tricks
+
+#### Tip 1
+
+Per recuperare dettagli sull'utilizzo dei comandi all'interno della command line abbiamo 2 possibilità:
+
+##### 1. --help
+
+```bash
+comando --help
+```
+
+Ad esempio:
+
+```bash
+uptime --help
+```
+
+##### 2. man
+
+```bash
+man comando
+```
+
+Ad esempio:
+
+```bash
+man uptime
+```
+
+All'interno di man, è possibile utilizzare le freccette direzionali (up/down); il carattere `q` permette di uscire dalla pagina di lettura del manuale.
+
+#### Tip 2
+
+Monitoraggio dell'utilizzo della CPU. Ovviamente l'output deve essere opportunamente filtrato (grep, awk).
+
+```bash
+# Nota: top -bn1 esegue top in batch mode per un'iterazione
+
+cpu_usage=$(top -bn1)
+echo $cpu_usage
+```
+
+Il valore numerico che è necessario isolare è il primo (il valore che precede *us*), che rappresenta la percentuale di utilizzo della CPU per processi utente. Questo valore indica quanto della capacità della CPU è utilizzata da processi avviati da utenti, escludendo i processi di sistema.
+
+#### Tip 3
+
+Tempo di uptime del sistema.
+
+```bash
+uptime_info=$(uptime)
+echo "Tempo di uptime del sistema: $uptime_info"
+```
+
+Anche in questo caso è necessario filtrare opportunamente l'output del comando.
+
+#### Tip 4
+
+Il comando *uptime* può mostrare un output più user-friendly:
+
+```bash
+uptime --pretty
+```
+
+#### Tip 5
+
+TODO: cut
+
+## Ex 6
+
+Modificare/ampliare l'esercizio precedente aggiungendo un sistema di *alert* qualora le risorse del sistema superino una determinata soglia di utilizzo.
+
+### Tips and tricks
+
+#### Tip 1
+
+
+
+## Ex 7
+
+Completa l'esercizio precedente migliorando la formattazione dell'output.
+
+### Tips and tricks
+
+#### Tip 1
+
+In Bash Script è possibile modificare il colore di output del testo visualizzato con il comando `echo`:
+
+```bash
+# Dichiarazione di costanti contenenti colori
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Hello World${NC}"
+```
+
+#### Tip 2
+
+
+Inoltre, è possibile utilizzare semplici funzioni da utilizzare con *shortcut* per la stampa a video di testo formattato; ad esempio:
+
+```bash
+# Funzione per stampare i titoli
+print_title() {
+    echo -e "${GREEN}$1${NC}"
+}
+
+# Funzione per stampare il testo normale
+print_info() {
+    echo -e "${RED}$1${NC}"
+}
+```
+
+### Tip 1+2
+
+Mettendo assieme entrambi i *tips*, ecco un possibile output:
+
+```bash
+# Header dello script
+echo -e "${GREEN}======================================${NC}"
+echo -e "${GREEN} Report sulle risorse di sistema ${NC}"
+echo -e "${GREEN}======================================${NC}\n"
+
+# Memoria RAM disponibile
+mem_value=$(free --mega | grep "Mem" | awk '{print $4}')
+print_title "Memoria RAM Disponibile:"
+print_info "$mem_value MB"
+
+# TO BE CONTINUED.
+```
