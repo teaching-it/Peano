@@ -138,7 +138,7 @@ text="token-1 token-2 token-3 token-4 bla bla"
 echo $text | awk '{print $1, $2, $5}'
 ```
 
-### Una possibile soluzione (svolta in classe in data 09/03/24)
+### Una possibile soluzione (svolta in classe in data 09/03/24, aggiornata il 15/03/24)
 
 ```bash
 # !/bin/bash
@@ -188,7 +188,7 @@ Modificare/ampliare l'esercizio precedente aggiungendo:
 
 #### Tip 1
 
-Per recuperare dettagli sull'utilizzo dei comandi all'interno della command line abbiamo 2 possibilità:
+Per recuperare dettagli sull'utilizzo di un comando all'interno della command line abbiamo 2 possibilità:
 
 ##### 1. --help
 
@@ -214,11 +214,11 @@ Ad esempio:
 man uptime
 ```
 
-All'interno di man, è possibile utilizzare le freccette direzionali (up/down); il carattere `q` permette di uscire dalla pagina di lettura del manuale.
+All'interno di man, utlizzare le freccette direzionali (up/down) per *scrollare* il contenuto; il carattere `q` permette di uscire dalla pagina di lettura del manuale.
 
 #### Tip 2
 
-Monitoraggio dell'utilizzo della CPU. Ovviamente l'output deve essere opportunamente filtrato (grep, awk).
+Monitoraggio dell'utilizzo della CPU: comando `top`. Ovviamente l'output deve essere opportunamente filtrato (grep, awk, *..altro?*).
 
 ```bash
 # Nota: top -bn1 esegue top in batch mode per un'iterazione
@@ -231,7 +231,7 @@ Il valore numerico che è necessario isolare è il primo (il valore che precede 
 
 #### Tip 3
 
-Tempo di uptime del sistema.
+Il comando `uptime` mostra da quanto tempo il sistema è acceso, insieme ad altre informazioni come il numero di utenti attualmente loggati e il carico medio del sistema negli ultimi 1, 5 e 15 minuti. L'output tipico di uptime potrebbe assomigliare a questo:
 
 ```bash
 uptime_info=$(uptime)
@@ -242,7 +242,7 @@ Anche in questo caso è necessario filtrare opportunamente l'output del comando.
 
 #### Tip 4
 
-Il comando *uptime* può mostrare un output più user-friendly:
+Il comando `uptime` può mostrare un output più user-friendly:
 
 ```bash
 uptime --pretty
@@ -250,7 +250,24 @@ uptime --pretty
 
 #### Tip 5
 
-TODO: cut
+Qualora l'output del comando `uptime` sia così articolato:
+
+```bash
+09:36:17 up 10 days, 2:00,  1 user,  load average: 0.00, 0.01, 0.05
+```
+
+potrebbe risultare complesso isolare `up 10 days`.
+
+In questo caso `cut` può essere utile nella definizione della soluzione.
+
+`cut -d',' -f1` specifica di usare la virgola `,` come delimitatore (con l'opzione `-d`), e di estrarre il primo campo con `-f1`.
+
+Quindi, questo comando estrarrà la parte dell'output fino alla prima virgola, che tipicamente include l'ora corrente e da quanto tempo il sistema è acceso senza includere il numero di giorni.
+
+```bash
+uptime | cut -d',' -f1
+12:14:17 up 7 days
+```
 
 ## Ex 6
 
@@ -260,7 +277,63 @@ Modificare/ampliare l'esercizio precedente aggiungendo un sistema di *alert* qua
 
 #### Tip 1
 
+Innanzitutto, ricorda che possiamo valorizzare variabili con l'output generato da un comando. Ad esempio:
 
+```bash
+mem_usage=$(free --mega | grep "Mem" | awk '{print $4}')
+```
+
+#### Tip 2
+
+Come hai giustamente intuito dobbiamo scomodare l'istruzione condizione `if`.
+
+Ad esempio:
+
+```bash
+if [$mem_usage -lt 100]; then
+    echo "ATTENZIONE! La memoria RAM disponibile è inferiore a 100M!"
+fi```
+```
+
+Più nel dettaglio, per utilizzare le istruzioni condizionali in Bash che confrontano si utilizzano gli operatori di confronto come `-gt`(greater than, maggiore di), `-lt` (less than, minore di), e `-eq` (equals, uguale a). Questi confronti sono utilizzati principalmente per numeri interi. Ecco una breve sintassi per ciascuno:
+
+```bash
+# Dichiarazione di due variabili
+a=5
+b=10
+
+# Esecuzione dei confronti
+
+# Greather than
+if [ $a -gt $b ]; then
+    echo "$a è maggiore di $b"
+fi
+
+# Less than
+if [ $a -lt $b ]; then
+    echo "$a è minore di $b"
+fi
+
+# Equals
+if [ $a -eq $b ]; then
+    echo "$a è uguale a $b"
+fi
+
+# Non equals
+if [ $a -ne $b ]; then
+    echo "$a non è uguale a $b"
+fi
+
+# Greather or equals
+if [ $a -ge $b ]; then
+    echo "$a è maggiore o uguale a $b"
+fi
+
+# Less or equals
+if [ $a -le $b ]; then
+     echo "$a è minore o uguale a $b"
+fi
+```
 
 ## Ex 7
 
@@ -283,8 +356,7 @@ echo -e "${GREEN}Hello World${NC}"
 
 #### Tip 2
 
-
-Inoltre, è possibile utilizzare semplici funzioni da utilizzare con *shortcut* per la stampa a video di testo formattato; ad esempio:
+Inoltre, è possibile utilizzare semplici funzioni da utilizzare come *shortcut* per la stampa a video di testo formattato; ad esempio:
 
 ```bash
 # Funzione per stampare i titoli
@@ -313,5 +385,5 @@ mem_value=$(free --mega | grep "Mem" | awk '{print $4}')
 print_title "Memoria RAM Disponibile:"
 print_info "$mem_value MB"
 
-# TO BE CONTINUED.
+# TO BE CONTINUED...
 ```
