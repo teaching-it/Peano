@@ -20,17 +20,17 @@ Configura le sottointerfacce per ogni VLAN come segue:
 interface GigabitEthernet0/0.10
 zdescription LAB1
  encapsulation dot1Q 10
- ip address 192.168.11.254 255.255.255.0
+ ip address 192.168.10.254 255.255.255.0
 !
 interface GigabitEthernet0/0.11
  description LAB2
  encapsulation dot1Q 11
- ip address 192.168.12.254 255.255.255.0
+ ip address 192.168.11.254 255.255.255.0
 !
 interface GigabitEthernet0/0.12
  description Sala Server
  encapsulation dot1Q 12
- ip address 192.168.10.254 255.255.255.0
+ ip address 192.168.12.254 255.255.255.0
 ```
 
 - `interface GigabitEthernet0/0.X` per entrare nella modalità di configurazione della sottointerfaccia, dove X è il numero della VLAN.
