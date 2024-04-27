@@ -18,7 +18,7 @@ Configura le sottointerfacce per ogni VLAN come segue:
 
 ```plaintext
 interface GigabitEthernet0/0.10
-zdescription LAB1
+ description LAB1
  encapsulation dot1Q 10
  ip address 192.168.10.254 255.255.255.0
 !
