@@ -23,11 +23,10 @@ L'autenticazione dei client avverrà utilizzando le credenziali memorizzate all'
 aaa new-model
 aaa authentication login VPN-user local
 aaa authorization network VPN-group local
-
 username vpnuser secret 123userpass
 ```
 
-Analogamente alla configurazione di una VPN site-to-site, anche una VPN client-to-gateway basa la procedura di negoziazione del tunnel sul protocollo IKE, non ché su algoritmi crittografici e funzioni crittografiche di hash.
+Analogamente alla configurazione di una VPN site-to-site, anche una VPN client-to-gateway basa la procedura di negoziazione del tunnel sul protocollo IKE, nonché su algoritmi crittografici e funzioni crittografiche di hash.
 
 I seguenti parametri caratterizzano la negoziazione della ISAKMP Security Association (fase 1):
 
@@ -41,9 +40,9 @@ lifetime 3600
 exit
 ```
 
-Un client non è conoscenza delle specifiche di configurazione di networking che dovrà assumere. Queste sono definite sul router, il quale si occuperà di inviarle al client.
+Un client non ha conoscenza delle specifiche di configurazione di networking che dovrà assumere. Queste sono definite sul router, il quale si occuperà di inviarle al client.
 
-Innanzi tutto, procediamo alla configurazione di un pool di indirizzi IP (si noti che il pool è un sotto insieme della *slash 24* in uso nella LAN):
+Innanzi tutto, procediamo alla configurazione di un pool di indirizzi IP (si noti che il pool è un sottoinsieme della `slash 24` in uso nella LAN):
 
 ```cisco
 ip local pool VPN-pool 192.168.1.100 192.168.1.110
@@ -58,21 +57,21 @@ pool VPN-pool
 exit
 ```
 
-Le seguenti specifiche sono necessarie per la negoziazione della IPSec Security Association (fase 2). 
+Le seguenti specifiche sono necessarie per la negoziazione della IPSec Security Association (fase 2).
 
-Curiosità: reverse-route si riferisce a **reverse route injection (RRI)**, una funzionalità capace di attribuire automaticamente al client remoto regole di routing statiche, affinché sia possibile raggiungere la rete privata di destinazione.
+**Curiosità:** reverse-route si riferisce a **reverse route injection (RRI)**, una funzionalità capace di attribuire automaticamente al client remoto regole di routing statiche, affinché sia possibile raggiungere la rete privata di destinazione.
 
-**crypto dynamic-map** invece, offre la possibilità di condurre a compimento la procedura di negoziazione, sebbene alcune informazioni del client remoto non siano conosciute a priori (ad esempio il suo indirizzo iP sorgente).
+**crypto dynamic-map** invece, offre la possibilità di condurre a compimento la procedura di negoziazione, sebbene alcune informazioni del client remoto non siano conosciute a priori (ad esempio il suo indirizzo IP sorgente).
 
 ```cisco
-crypto ipsec transform-set VPN-set esp-aes esp-sha-hmac 
+crypto ipsec transform-set VPN-set esp-aes esp-sha-hmac
 crypto dynamic-map VPN-dynamic-map 10
 set transform-set VPN-set
 reverse-route
 exit
 ```
 
-Infine, procediamo alla definizione di una mappa crittografica denominata VPN-static-map. Una mappa crittografica (crypto map) è un'entità di configurazione che assolve a vari compiti, tra cui:
+Infine, procediamo alla definizione di una mappa crittografica denominata `VPN-static-map`. Una mappa crittografica (crypto map) è un'entità di configurazione che assolve a vari compiti, tra cui:
 
 1. selezionare i flussi di dati che richiedono un'elaborazione di sicurezza;
 2. definire la politica di sicurezza per questi flussi (mediante l'associazione con il dynamic map denominato VPN-dynamic-map, precedentemente definito);
@@ -87,11 +86,12 @@ crypto map VPN-static-map 10 ipsec-isakmp dynamic VPN-dynamic-map
 
 Infine, è necessario applicare il crypto map all'interfaccia outside del router.
 
-```bash
+```cisco
 interface Serial0/1/0
-crypto map VPN-static-map 
+crypto map VPN-static-map
 ```
 
 A questo punto è possibile procedere alla configurazione del client e alla connessione con il gateway VPN.
+
 
 ![VPN client configuration](client_configuration.png)

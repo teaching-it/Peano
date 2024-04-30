@@ -4,7 +4,7 @@
 
 Le VPN basano il loro funzionamento su un'ampia suite di tecnologie (protocolli, algoritmi crittografici, funzioni crittografiche di hash).
 
-Come prima cosa vi riporto i principali elementi coinvolti (ed una breve descrizione per ciascuno), molti dei quali dovrebbero già risultarvi familiari. 
+Come prima cosa vi riporto i principali elementi coinvolti (ed una breve descrizione per ciascuno), molti dei quali dovrebbero già risultarvi familiari.
 
 Sì, il testo è in inglese! Considerando che la maggior parte della documentazione relativa al mondo in IT è, appunto, in inglese, vi chiedo un piccolo sforzo in tal senso.
 
@@ -13,19 +13,19 @@ Sì, il testo è in inglese! Considerando che la maggior parte della documentazi
 Encryption algorithms protect the data so it cannot be read by a third-party while in transit.
 
 1. **AES (Advanced Encryption Standard)** is the strongest encryption algorithm available. AES supports encryption keys of these lengths: 128, 192, or 256 bits. AES is faster than 3DES.
-2. **3DES (Triple-DES)**. An encryption algorithm based on DES that uses the DES cipher algorithm three times to encrypt the data. The encryption key is 168-bit. 3DES is slower than AES. The Sweet32 vulnerability affects 3DES.
+2. **3DES (Triple-DES)**. An encryption algorithm based on DES that uses the DES cipher algorithm three times to encrypt the data. The encryption key is 168-bit. 3DES is slower than AES. The Sweet32 vulnerability affects 3DES, but it is still used where compatibility with older systems is necessary.
 3. **DES (Data Encryption Standard).** Uses an encryption key that is 56 bits long. DES is the weakest of the three algorithms, and it is considered to be insecure.
 
 ### Authentication algorithms
 
 Authentication algorithms verify the data integrity and authenticity of a message.
 
-1. **MD5.** It produces a 128-bit (16 byte) message digest, which makes it faster than SHA1 or SHA2. This is the least secure algorithm.
+1. **MD5.** It produces a 128-bit (16 byte) message digest, which makes it faster than SHA1 or SHA2. This is the least secure algorithm, used in less critical implementations.
 
-2. **HMAC-SHA1 (Hash Message Authentication Code — Secure Hash Algorithm 1).** SHA1 produces a 160-bit (20 byte) message digest. Although slower than MD5, this larger digest size makes it stronger against brute force attacks. SHA-1 is considered to be mostly insecure because of a vulnerability.
+2. **HMAC-SHA1 (Hash Message Authentication Code — Secure Hash Algorithm 1).** SHA1 produces a 160-bit (20 byte) message digest. Although slower than MD5, this larger digest size makes it stronger against brute force attacks. SHA-1 is mostly insecure due to vulnerabilities such as collision attacks.
 
-3. **HMAC-SHA2 (Hash Message Authentication Code — Secure Hash Algorithm 2).** SHA2 is stronger than either SHA1 or MD5. Mainly there are 3 variants of SHA2 with different message digest lengths: 
-    - SHA2-256 — produces a 265-bit (32 byte) message digest;
+3. **HMAC-SHA2 (Hash Message Authentication Code — Secure Hash Algorithm 2).** SHA2 is stronger than either SHA1 or MD5. Mainly there are 3 variants of SHA2 with different message digest lengths:
+    - SHA2-256 — produces a 256-bit (32 byte) message digest;
     - SHA2-384 — produces a 384-bit (48 byte) message digest;
     - SHA2-512 — produces a 512-bit (64 byte) message digest.
 
@@ -41,11 +41,11 @@ A Diffie-Hellman key group is a group of integers used for the Diffie-Hellman ke
 
 ### IKE Protocol
 
-IKE (Internet Key Exchange) is a protocol used to set up security associations for IPSec. These security associations establish shared session secrets from which keys are derived for encryption of tunneled data. IKE is also used to authenticate the two IPSec peers.
+IKE (Internet Key Exchange) is a protocol used to set up security associations for IPSec. These security associations establish shared session secrets from which keys are derived for encryption of tunneled data. IKE is also used to authenticate the two IPSec peers. **It operates as an implementation of the ISAKMP** (Internet Security Association and Key Management Protocol) framework, specifically designed to handle key negotiation and security management for IPSec.
 
 ### Internet Security Association and Key Management Protocol (ISAKMP)
 
-Is used for negotiating, establishing, modification and deletion of SAs and related parameters. It defines the procedures and packet formats for peer authentication creation and management of SAs and techniques for key generation.
+ISAKMP is used for negotiating, establishing, modification, and deletion of SAs and related parameters. It defines the procedures and packet formats for peer authentication, creation and management of SAs, and techniques for key generation. **IKE, as an implementation of the ISAKMP framework**, specifically focuses on these aspects within the context of IPSec.
 
 ### Peers
 
@@ -140,7 +140,7 @@ R1(config)# crypto isakmp policy 10
 
 Grazie alla keyword **crypto** è possibile accedere alla configurazione del tunnel VPN.
 
-Cos'è **ISAKMP**? Senza addentrarci nei dettagli, il protocollo IKE coopera con il protocollo ISAKMP. ISAKMP definisce le procedure per l'autenticazione e la comunicazione tra i gateway VPN, ed utilizza IKE per la fase di negoziazione delle chiavi crittografiche.
+Cos'è **ISAKMP**? ISAKMP (Internet Security Association and Key Management Protocol) è un protocollo (framework) che stabilisce le procedure per la gestione delle sicurezze e la negoziazione delle chiavi nelle comunicazioni di rete. Serve come base per il protocollo IKE (Internet Key Exchange), che è specificamente impiegato per gestire la negoziazione delle chiavi crittografiche necessarie per la sicurezza delle VPN. IKE, in quanto **implementazione** di ISAKMP, si occupa direttamente della fase di negoziazione delle chiavi e dell'autenticazione tra i gateway VPN, seguendo le direttive e i meccanismi definiti da ISAKMP."
 
 Perché **policy 10**? Due gateway VPN debbono condividere lo stesso set di regole (policy), al fine di concludere con successo la fase di negoziazione del tunnel VPN. In uno stesso peer, quindi, potremmo al contempo definire più di un set di regole (qualora, ad esempio, si abbia la necessità di attivare più tunnel VPN con differenti peers). Ciascuna di esse è identificata con un valore intero nel range [1,10000] che, al contempo, definisce l'ordine. È pratica comune iniziare la numerazione delle policy da 10.
 
