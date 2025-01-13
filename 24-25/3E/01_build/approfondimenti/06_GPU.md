@@ -1,4 +1,4 @@
-# Scheda Grafica (GPU)**
+# Scheda Grafica (GPU)
 
 La GPU (Graphics Processing Unit) è uno dei componenti più importanti in un computer, soprattutto per gaming, rendering, machine learning e altre applicazioni che richiedono calcoli grafici complessi. Ecco un approfondimento sui parametri prestazionali tipici da considerare.
 

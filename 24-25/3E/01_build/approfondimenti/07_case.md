@@ -1,4 +1,4 @@
-##**Caratteristiche del Case**
+# Caratteristiche del Case
 
 La scelta del case è cruciale per garantire compatibilità con i componenti e un flusso d'aria ottimale. Ecco alcune caratteristiche fondamentali da considerare:
 
