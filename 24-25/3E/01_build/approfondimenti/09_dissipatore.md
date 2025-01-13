@@ -1,10 +1,10 @@
-#**Dissipatore CPU**
+# Dissipatore CPU
 
 Il dissipatore della CPU è fondamentale per mantenere il processore entro temperature operative sicure, prevenendo il surriscaldamento e migliorando la stabilità del sistema. Ecco i principali aspetti da considerare:
 
 ---
 
-###**1. Compatibilità socket**
+## **1. Compatibilità socket**
 
 - **Definizione:** Il dissipatore deve essere compatibile con il socket della CPU, che varia a seconda della piattaforma (Intel o AMD).
 - **Socket comuni:**
