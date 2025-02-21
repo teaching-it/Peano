@@ -14,6 +14,8 @@ Per analizzare l’indirizzamento IP assegnato ai dispositivi all’interno dell
   - `ip route show`
   - `netstat -nr`
 
+Oppure, utilizzare `ipconfig /all` da CLI Windows.
+
 Inoltre, utilizzando strumenti come `getmyip` (servizio Web) possiamo determinare quale indirizzo pubblico viene utilizzato per le connessioni verso l’esterno. Nel nostro caso, viene rilevato **210.82.199.210**.
 
 ---
