@@ -16,13 +16,13 @@ Per analizzare l’indirizzamento IP assegnato ai dispositivi all’interno dell
 
 Oppure, utilizzare `ipconfig /all` da CLI Windows.
 
-Inoltre, utilizzando strumenti come `getmyip` (servizio Web) possiamo determinare quale indirizzo pubblico viene utilizzato per le connessioni verso l’esterno. Nel nostro caso, viene rilevato **210.82.199.210**.
+Inoltre, utilizzando strumenti come `getmyip` (servizio Web) possiamo determinare quale indirizzo pubblico viene utilizzato per le connessioni verso l’esterno. Nel nostro caso, viene rilevato **213.82.199.210**.
 
 ---
 
 ## Struttura della Rete e Indirizzamento IP Pubblico
 
-L'output del comando `whois` applicato all'IP pubblico mostra che l'ISP ha assegnato un range di **quattro indirizzi IP pubblici** all'istituto, compresi tra **210.82.199.208 e 210.82.199.211**. Questo suggerisce che la rete pubblica è stata configurata con una subnet di **maschera /30** (ovvero 255.255.255.252), sufficiente per gestire una comunicazione point-to-point tra il router dell'istituto e il router del provider.
+L'output del comando `whois` applicato all'IP pubblico mostra che l'ISP ha assegnato un range di **quattro indirizzi IP pubblici** all'istituto, compresi tra **213.82.199.208 e 213.82.199.211**. Questo suggerisce che la rete pubblica è stata configurata con una subnet di **maschera /30** (ovvero 255.255.255.252), sufficiente per gestire una comunicazione point-to-point tra il router dell'istituto e il router del provider.
 
 La situazione può essere schematizzata come segue:
 
@@ -32,7 +32,7 @@ La situazione può essere schematizzata come segue:
   - **.210** → IP assegnato all'interfaccia esterna del nostro edge router
   - **.211** → Broadcast (non assegnabile)
 
-Quindi, l’**interfaccia esterna del nostro edge router** è configurata con **210.82.199.210**, mentre il router dell’ISP, con cui il nostro router comunica direttamente, utilizza **210.82.199.209**.
+Quindi, l’**interfaccia esterna del nostro edge router** è configurata con **213.82.199.210**, mentre il router dell’ISP, con cui il nostro router comunica direttamente, utilizza **213.82.199.209**.
 
 Dopo questo primo collegamento, il router dell’ISP continuerà a instradare il traffico su un'altra subnet point-to-point **/31**, che collega questo router con un nodo superiore della rete del provider.  
 
@@ -71,10 +71,10 @@ Se l'ISP usasse **/31**, alcuni clienti con apparati obsoleti potrebbero avere p
 Quando analizziamo il percorso con il comando `traceroute`, possiamo vedere chiaramente i passaggi seguenti:
 
 1. **10.0.22.254** → Il primo hop è il gateway interno della rete del laboratorio, ovvero l’edge router.
-2. **210.82.199.209** → Il secondo hop è l'interfaccia del router del provider a cui il nostro edge router è connesso direttamente tramite la subnet /30.
+2. **213.82.199.209** → Il secondo hop è l'interfaccia del router del provider a cui il nostro edge router è connesso direttamente tramite la subnet /30.
 3. **Hop successivi** → Il traffico prosegue attraverso la rete del provider fino alla destinazione finale.
 
-Questa configurazione conferma che il nostro **edge router funge da punto di transito tra la rete privata (10.0.22.0/24) e la rete pubblica (210.82.199.208/30), utilizzando NAT per gestire il traffico**.
+Questa configurazione conferma che il nostro **edge router funge da punto di transito tra la rete privata (10.0.22.0/24) e la rete pubblica (213.82.199.208/30), utilizzando NAT per gestire il traffico**.
 
 ---
 
