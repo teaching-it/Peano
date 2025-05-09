@@ -21,8 +21,7 @@
    - Quali MAC address sono coinvolti
    - Il ruolo dell’ARP nella risoluzione degli indirizzi IP
 
-7. Dopo la comunicazione, esegui nuovamente:
-   ``arp -a``  
+7. Dopo la comunicazione, esegui nuovamente ``arp -a``  
    per **verificare che l’indirizzo IP pingato sia ora presente nella tabella** con il MAC associato. È coerente con quanto intercettato con tcpdump?
 
 8. Inserisci **screenshot** significativi e il risultato del comando ``arp -a`` prima e dopo il ping.
