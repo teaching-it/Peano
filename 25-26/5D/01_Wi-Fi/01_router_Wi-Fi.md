@@ -1,15 +1,15 @@
-# Appunti – TP-Link Archer C5 (e simili)
+# Router Wi-Fi: configurazioni a confronto
 
 ![Router Wi-Fi](imgs/TP-Link_retro.png)
 
 ## Scenario generale
-- Router Wi-Fi che dispone delle seguenti interfacce:
+- Router Wi-Fi **TP-Link Archer C5** che dispone delle seguenti interfacce:
   - **WAN (porta Ethernet dedicata)**
   - **LAN (4 porte Ethernet "switchate")**
   - **WLAN (interfaccia Wi-Fi con SSID configurabile)**
 
 - Rete di laboratorio esistente: **LabInf2**
-- Router usato per creare/gestire rete Wi-Fi **PeanoWiFi_Labinf2**
+- Router Wi-Fi usato per creare/gestire rete Wi-Fi **PeanoWiFi_Labinf2**
 
 ---
 
@@ -122,7 +122,7 @@
   - l’IP del router deve essere sempre configurato **staticamente** se si usa una porta LAN come uplink.  
   - i client collegati alla WLAN in bridge con la LAN ricevono l’IP **direttamente dal DHCP server a monte**.  
 
-👉 Questo significa che in **Modalità 2 (LAN ↔ WLAN bridge)** l’amministratore deve assegnare manualmente al router un IP libero nella stessa rete del laboratorio (es. `10.0.22.200/24`).  
+Questo significa che in **Modalità 2 (LAN ↔ WLAN bridge)** l’amministratore deve assegnare manualmente al router un IP libero nella stessa rete del laboratorio (es. `10.0.22.200/24`).  
 
 ### Perché questa scelta?
 - I router consumer sono progettati per scenari semplici, con la distinzione netta:
