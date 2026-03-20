@@ -40,8 +40,7 @@ Esempio:
 - ogni riga = un router attraversato
 - numero iniziale = ordine del percorso
 
-Esempio:
-> Il pacchetto attraversa 5 hop prima di arrivare a destinazione.
+Esempio: il pacchetto attraversa 5 hop prima di arrivare a destinazione.
 
 ---
 
@@ -52,8 +51,8 @@ Esempio:
 Valori indicativi:
 - <1 ms → rete locale  
 - 10–30 ms → rete nazionale  
-- >50 ms → tratte lunghe  
-- >100 ms → rete internazionale  
+- \>50 ms → tratte lunghe  
+- \>100 ms → rete internazionale  
 
 ---
 
@@ -91,8 +90,7 @@ Strumenti di verifica:
 - whois  
   (consente di identificare a quale organizzazione/ISP appartiene un indirizzo IP e quindi individuare il relativo AS)
 
-Esempio:
-> Passaggio da rete locale a ISP e successivamente a backbone internazionale, verificabile anche tramite interrogazioni whois sugli IP intermedi.
+Esempio: passaggio da rete locale a ISP e successivamente a backbone internazionale, verificabile anche tramite interrogazioni whois sugli IP intermedi.
 
 ---
 
@@ -141,8 +139,7 @@ Cause:
 - rate limiting  
 - routing asimmetrico  
 
-Regola:
-> Se il valore torna basso → è improbabile che si tratti di congestione reale della rete
+Regola: se il valore torna basso è improbabile che si tratti di congestione reale della rete.
 
 ---
 
@@ -213,8 +210,7 @@ Motivazioni:
 - il router può applicare limitazioni (rate limiting) alle risposte ICMP  
 - il ritorno a valori normali all’hop successivo e nel ping conferma che il percorso reale non è lento  
 
-Ricapitolando:
-> L’anomalia è legata alla risposta del router, non alla qualità del collegamento di rete
+Ricapitolando: l’anomalia è legata alla risposta del router, non alla qualità del collegamento di rete.
 
 ---
 
@@ -244,8 +240,7 @@ Motivazioni:
 - possibile attraversamento di più Autonomous Systems con instradamenti non ottimali  
 - possibile congestione su uno o più link intermedi  
 
-Ricapitolando:
-> La latenza elevata è reale e dipende dalle caratteristiche del percorso di rete (distanza, instradamento o congestione), non dal comportamento ICMP dei router
+Ricapitolando: la latenza elevata è reale e dipende dalle caratteristiche del percorso di rete (distanza, instradamento o congestione), non dal comportamento ICMP dei router.
 
 ---
 ## Caso 3: tracert variabile, ping stabile
@@ -296,8 +291,7 @@ Motivazioni:
 - la congestione può verificarsi su collegamenti WAN o su link tra Autonomous Systems  
 - a differenza dei casi precedenti, il problema impatta direttamente il traffico reale (non solo ICMP)  
 
-Ricapitolando:
-> La presenza di packet loss insieme a RTT elevato è un forte indicatore di congestione o saturazione della rete
+Ricapitolando: la presenza di packet loss insieme a RTT elevato è un forte indicatore di congestione o saturazione della rete.
 
 ---
 
@@ -408,7 +402,7 @@ Commento:
 Caso interessante:
 
 
-7 15.801 ms 7.874 ms 7.988 ms
+    7 15.801 ms 7.874 ms 7.988 ms
 
 
 Interpretazione:
@@ -434,8 +428,7 @@ Analisi:
 - nessun packet loss visibile
 - nessun RTT elevato persistente
 
-Commento:
-Non ci sono evidenze di congestione. La rete appare stabile ed efficiente.
+Commento: non ci sono evidenze di congestione. La rete appare stabile ed efficiente.
 
 ---
 
