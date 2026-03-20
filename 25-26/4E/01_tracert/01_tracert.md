@@ -25,7 +25,7 @@ Esempio:
 
 | Hop | RTT 1 | RTT 2 | RTT 3 | Indirizzo / Note        |
 |-----|------|------|------|--------------------------|
-| 1   | <1 ms | <1 ms | <1 ms | 192.168.1.1             |
+| 1   | <1 ms | <1 ms | <1 ms | 192.168.1.254           |
 | 2   | 10 ms | 12 ms | 11 ms | 10.0.0.1                |
 | 3   | 25 ms | 30 ms | 28 ms | 151.6.1.254             |
 | 4   | *     | *     | *     | Request timed out       |
@@ -40,7 +40,7 @@ Esempio:
 - ogni riga = un router attraversato
 - numero iniziale = ordine del percorso
 
-Esempio: il pacchetto attraversa 5 hop prima di arrivare a destinazione.
+Esempio: il pacchetto attraversa 4 hop prima di arrivare a destinazione.
 
 ---
 
