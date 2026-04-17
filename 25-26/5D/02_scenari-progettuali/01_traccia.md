@@ -84,7 +84,7 @@ Specificare almeno:
 
 ------------------------------------------------------------------------
 
-### 5. Mezzi trasmissivi e velocità
+### 4. Mezzi trasmissivi e velocità
 
 Definire:
 
@@ -102,7 +102,7 @@ Specificare:
 
 ------------------------------------------------------------------------
 
-### 6. Ridondanza e continuità del servizio
+### 5. Ridondanza e continuità del servizio
 
 Analizzare le soluzioni per garantire alta disponibilità e resilienza:
 
