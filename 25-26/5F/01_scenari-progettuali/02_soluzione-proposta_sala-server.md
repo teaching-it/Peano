@@ -80,12 +80,12 @@ Di seguito è riportato uno schema logico semplificato del segmento sala server.
                      /           |            \
                     /            |             \
                  WAN      LAN utenti/VLAN      Rete server
-                                 |                  |
-                                 |                  |
-                    [ Switch aggregator ]   [ Switch server ]
-                      /         |         \         /    |     \
-                     /          |          \       /     |      \
-                    /           |           \     /      |       \
+                                 |                      |
+                                 |                      |
+                    [ Switch aggregator ]           [ Switch server ]
+                      /         |         \             /    |     \
+                     /          |          \           /     |      \
+                    /           |           \         /      |       \
               Reparto A    Reparto B    Reparto C  Proxmox1 Proxmox2 NAS
                                                       |        |
                                                       |        |
