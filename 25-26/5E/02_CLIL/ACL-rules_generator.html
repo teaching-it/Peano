@@ -1,0 +1,1387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CLIL Generator - Cisco ACL and nftables</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #5f6b7a;
+      --line: #dbe2ee;
+      --accent: #315efb;
+      --accent-dark: #2448c8;
+      --good: #0d8f5f;
+      --warn-bg: #fff7df;
+      --warn-line: #f2c66d;
+      --code-bg: #101827;
+      --code-ink: #e6edf7;
+      --shadow: 0 18px 45px rgba(23, 32, 51, 0.10);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #e8eeff 0, transparent 32rem), var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    header {
+      padding: 2rem min(4vw, 3rem) 1rem;
+    }
+
+    h1 {
+      margin: 0 0 .4rem;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+
+    header p {
+      max-width: 980px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    main {
+      padding: 0 min(4vw, 3rem) 3rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .94);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .builder {
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+
+    .field { grid-column: span 3; }
+    .field.wide { grid-column: span 6; }
+    .field.full { grid-column: 1 / -1; }
+    .field.small { grid-column: span 2; }
+
+    .group-banner {
+      grid-column: 1 / -1;
+      border: 1px solid var(--line);
+      border-left-width: 6px;
+      border-radius: 14px;
+      padding: .8rem .9rem;
+      background: #fbfcff;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .group-banner strong {
+      display: block;
+      font-size: 1.20rem;
+    }
+
+    .group-banner span {
+      display: block;
+      color: var(--muted);
+      font-size: .84rem;
+      margin-top: .12rem;
+    }
+
+    .group-banner.common { border-left-color: #315efb; }
+    .group-banner.cisco { border-left-color: #0d8f5f; }
+    .group-banner.nft { border-left-color: #8b5cf6; }
+
+    .tag {
+      border-radius: 999px;
+      padding: .22rem .55rem;
+      font-weight: 800;
+      font-size: .72rem;
+      background: #eef3ff;
+      color: #2542a0;
+      white-space: nowrap;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 .35rem;
+      font-weight: 700;
+      font-size: .88rem;
+    }
+
+    .hint {
+      margin-top: .32rem;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: .72rem .82rem;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(49, 94, 251, .7);
+      box-shadow: 0 0 0 4px rgba(49, 94, 251, .12);
+    }
+
+    input:disabled, select:disabled, textarea:disabled {
+      background: #f0f3f8;
+      color: #8994a6;
+      cursor: not-allowed;
+      opacity: .9;
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .75rem 1.1rem;
+      padding: .3rem 0 .2rem;
+    }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      color: var(--ink);
+      font-weight: 650;
+      font-size: .9rem;
+    }
+
+    .check input { width: auto; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(4, max-content);
+      align-items: end;
+      gap: .7rem;
+      margin-top: 1rem;
+    }
+
+    .attribute-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .7rem;
+      margin-top: 1rem;
+    }
+
+    .preset-box {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+      background: #fbfcff;
+    }
+
+    .preset-box h3 {
+      margin: 0 0 .75rem;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .preset-control {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .preset-row {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+    }
+
+    .preset-row select {
+      flex: 1 1 auto;
+    }
+
+    .preset-row button {
+      flex: 0 0 auto;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: .72rem 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: #fff;
+      background: var(--accent);
+      transition: transform .12s, background .12s, box-shadow .12s;
+      box-shadow: 0 8px 18px rgba(49, 94, 251, .22);
+    }
+
+    button:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    button.secondary { background: #e9edf7; color: var(--ink); box-shadow: none; }
+    button.secondary:hover { background: #dbe2ee; }
+    button.ghost { background: transparent; color: var(--accent); box-shadow: none; padding-inline: .5rem; }
+
+    .outputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .output-card {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .output-head {
+      padding: 1rem 1rem .7rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+    }
+
+    .output-head h2 { font-size: 1.05rem; }
+
+    .codebox {
+      width: 100%;
+      min-height: 430px;
+      border: 0;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 1rem;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: .92rem;
+      line-height: 1.5;
+      resize: vertical;
+      white-space: pre;
+    }
+
+    .messages {
+      display: none;
+      margin: 1rem 0 0;
+      border: 1px solid var(--warn-line);
+      background: var(--warn-bg);
+      border-radius: 14px;
+      padding: .8rem .9rem;
+      color: #5d4300;
+      font-size: .9rem;
+    }
+
+    .messages.show { display: block; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: #2542a0;
+      padding: .35rem .6rem;
+      font-weight: 800;
+      font-size: .78rem;
+      white-space: nowrap;
+    }
+
+    .mini-help {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .mini-help code {
+      background: #eef1f7;
+      padding: .1rem .32rem;
+      border-radius: .35rem;
+      color: #25304a;
+    }
+
+    @media (max-width: 980px) {
+      .field, .field.small, .field.wide { grid-column: span 6; }
+      .outputs { grid-template-columns: 1fr; }
+      .codebox { min-height: 330px; }
+    }
+
+    @media (max-width: 640px) {
+      header, main { padding-inline: 1rem; }
+      .field, .field.small, .field.wide { grid-column: 1 / -1; }
+      .section-title, .output-head, .group-banner { align-items: flex-start; flex-direction: column; }
+      .actions {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+      }
+      .actions button { width: 100%; }
+      .preset-control { grid-column: 1 / -1; }
+      .preset-row { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CLIL Generator: Cisco ACL ⇄ nftables</h1>
+    <p>
+      Fill in the rule attributes and compare a <strong>Cisco IOS extended ACL style</strong> command set with an equivalent <strong>nftables</strong> configuration for Debian/Linux. This page is fully standalone and uses no external libraries.
+    </p>
+  </header>
+
+  <main>
+    <section class="panel builder" aria-labelledby="form-title">
+      <div class="section-title">
+        <h2 id="form-title">1. Rule attributes</h2>
+        <span class="pill" id="statusPill">Ready</span>
+      </div>
+
+      <div class="grid">
+        <div class="group-banner common">
+          <div>
+            <strong>Common attributes</strong>
+            <span>These values describe the traffic flow and are translated into both Cisco ACL and nftables syntax.</span>
+          </div>
+          <span class="tag">shared</span>
+        </div>
+
+        <div class="field small">
+          <label for="action">Action</label>
+          <select id="action">
+            <option value="permit">permit / accept</option>
+            <option value="deny">deny / drop</option>
+          </select>
+        </div>
+
+        <div class="field small">
+          <label for="protocol">Protocol</label>
+          <select id="protocol">
+            <option value="tcp" selected>TCP</option>
+            <option value="udp">UDP</option>
+            <option value="icmp">ICMP</option>
+            <option value="ip">Any IPv4 protocol</option>
+          </select>
+        </div>
+
+        <div class="field small">
+          <label for="portOperator">Logical port</label>
+          <select id="portOperator">
+            <option value="eq" selected>eq / equal to</option>
+            <option value="neq">neq / not equal to</option>
+            <option value="lt">lt / lower than</option>
+            <option value="gt">gt / greater than</option>
+            <option value="range">range</option>
+            <option value="none">none</option>
+          </select>
+          <div class="hint">Used only with TCP/UDP.</div>
+        </div>
+
+        <div class="field small">
+          <label for="servicePreset">Service</label>
+          <select id="servicePreset">
+            <option value="22">SSH / 22</option>
+            <option value="53">DNS / 53</option>
+            <option value="80">HTTP / 80</option>
+            <option value="443" selected>HTTPS / 443</option>
+            <option value="25">SMTP / 25</option>
+            <option value="110">POP3 / 110</option>
+            <option value="143">IMAP / 143</option>
+            <option value="3389">RDP / 3389</option>
+            <option value="custom">custom</option>
+          </select>
+        </div>
+
+        <div class="field small">
+          <label for="port1">Port 1</label>
+          <input id="port1" type="number" min="1" max="65535" value="443" />
+        </div>
+
+        <div class="field small">
+          <label for="port2">Port 2</label>
+          <input id="port2" type="number" min="1" max="65535" value="8443" />
+          <div class="hint">Only for ranges.</div>
+        </div>
+
+        <div class="field wide">
+          <label for="sources">Source address(es)</label>
+          <textarea id="sources" spellcheck="false">192.168.10.0/24
+10.10.10.5</textarea>
+          <div class="hint">One per line: <code>any</code>, host IP, or CIDR network such as <code>192.168.10.0/24</code>.</div>
+        </div>
+
+        <div class="field wide">
+          <label for="destination">Destination address</label>
+          <input id="destination" value="172.16.1.10" spellcheck="false" />
+          <div class="hint">Host or CIDR network, such as <code>172.16.1.10</code> or <code>172.16.1.0/24</code>.</div>
+        </div>
+
+        <div class="field wide">
+          <label for="remark">Comment / remark</label>
+          <input id="remark" value="Rule generated during the CLIL lab" />
+        </div>
+
+        <div class="field wide checkbox-row">
+          <label class="check"><input id="includeRemark" type="checkbox" checked /> include comments / remarks</label>
+        </div>
+
+        <div class="group-banner cisco">
+          <div>
+            <strong>Cisco ACL-specific attributes</strong>
+            <span>These values affect only the Cisco IOS ACL output: ACL name/number, sequence numbers, interface binding, direction and logging.</span>
+          </div>
+          <span class="tag">Cisco only</span>
+        </div>
+
+        <div class="field small">
+          <label for="aclId">Cisco extended ACL</label>
+          <input id="aclId" value="CLIL_ACL" placeholder="e.g. CLIL_ACL or 101" />
+          <div class="hint">Extended ACL name or number.</div>
+        </div>
+
+        <div class="field small">
+          <label for="seqStart">First sequence</label>
+          <input id="seqStart" type="number" min="1" step="1" value="10" />
+          <div class="hint">Named ACL only.</div>
+        </div>
+
+        <div class="field small">
+          <label for="seqStep">Sequence step</label>
+          <input id="seqStep" type="number" min="1" step="1" value="10" />
+          <div class="hint">One line per source.</div>
+        </div>
+
+        <div class="field small">
+          <label for="iface">Cisco interface</label>
+          <input id="iface" value="GigabitEthernet0/0" />
+          <div class="hint">Leave empty if not applied.</div>
+        </div>
+
+        <div class="field small">
+          <label for="aclDirection">Cisco direction</label>
+          <select id="aclDirection">
+            <option value="in" selected>in</option>
+            <option value="out">out</option>
+          </select>
+        </div>
+
+        <div class="field full checkbox-row">
+          <label class="check"><input id="namedAcl" type="checkbox" checked /> use Cisco named ACL syntax</label>
+          <label class="check"><input id="includeCiscoLog" type="checkbox" /> add Cisco log</label>
+          <label class="check"><input id="includeFinalDeny" type="checkbox" /> add final Cisco deny</label>
+        </div>
+
+        <div class="group-banner nft">
+          <div>
+            <strong>nftables-specific attributes</strong>
+            <span>These values affect only the Linux/Debian nftables output: table name, base chain, default policy, counter and logging.</span>
+          </div>
+          <span class="tag">nftables only</span>
+        </div>
+
+        <div class="field small">
+          <label for="nftTable">nftables table</label>
+          <input id="nftTable" value="clil_acl" />
+        </div>
+
+        <div class="field small">
+          <label for="nftChain">nftables chain</label>
+          <select id="nftChain">
+            <option value="input">input</option>
+            <option value="forward" selected>forward</option>
+            <option value="output">output</option>
+          </select>
+          <div class="hint">Typical router use: forward.</div>
+        </div>
+
+        <div class="field small">
+          <label for="nftPolicy">Chain policy</label>
+          <select id="nftPolicy">
+            <option value="accept" selected>accept</option>
+            <option value="drop">drop</option>
+          </select>
+        </div>
+
+        <div class="field full checkbox-row">
+          <label class="check"><input id="includeNftCounter" type="checkbox" /> add nftables counter</label>
+          <label class="check"><input id="includeNftLog" type="checkbox" /> add nftables log</label>
+          <label class="check"><input id="includeNftDenyRest" type="checkbox" /> add nftables drop-rest rule</label>
+        </div>
+      </div>
+
+      <div class="attribute-actions">
+        <button id="generateBtn" type="button">Generate syntax</button>
+        <button class="ghost" id="clearBtn" type="button">Clear sources</button>
+      </div>
+
+      <div class="preset-box" aria-label="Preset loaders">
+        <h3>Preset loaders</h3>
+        <div class="actions">
+          <div class="preset-control">
+            <label for="scenarioPreset">Scenario presets</label>
+            <div class="preset-row">
+              <select id="scenarioPreset">
+                <option value="webAllow">Allow HTTPS from LAN to internal web server</option>
+                <option value="subnetSshDeny">Deny SSH from guest subnet to admin server</option>
+                <option value="sshAllow">Allow SSH from admin host to server</option>
+                <option value="internetDeny">Deny Internet access from guest subnet</option>
+                <option value="dnsAllow">Allow DNS queries to internal DNS server</option>
+                <option value="icmpAllow">Allow ICMP troubleshooting from IT subnet</option>
+              </select>
+              <button id="loadPresetBtn" type="button">Load preset</button>
+            </div>
+            <div class="hint">Use presets as starting points for classroom exercises.</div>
+          </div>
+          <div class="preset-control">
+            <label for="pairExercisePreset">Pair exercise presets</label>
+            <div class="preset-row">
+              <select id="pairExercisePreset">
+                <option value="pairSshAllow">Exercise 1A — allow SSH from partner</option>
+                <option value="pairSshDrop">Exercise 1B — drop SSH from everyone else</option>
+                <option value="pairHttpAllow">Exercise 2A — allow HTTP from partner</option>
+                <option value="pairHttpDrop">Exercise 2B — drop HTTP from lab subnet</option>
+                <option value="pairBlockSshLab">Exercise 3 — block SSH from lab subnet</option>
+                <option value="pairDenyHttpOut">Exercise 4A — deny outbound HTTP</option>
+                <option value="pairDenyHttpsOut">Exercise 4B — deny outbound HTTPS</option>
+                <option value="pairIcmpAllow">Exercise 5A — allow ICMP from partner</option>
+                <option value="pairIcmpDrop">Exercise 5B — drop ICMP from lab subnet</option>
+              </select>
+              <button id="loadPairPresetBtn" type="button">Load pair preset</button>
+            </div>
+            <div class="hint">Sample values use partner = 10.0.22.10 and my VM = 10.0.22.20. Replace them with your pair IPs.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="messages" id="messages" role="alert"></div>
+
+      <div class="mini-help">
+        Teaching note: Cisco IPv4 ACLs often use a <strong>wildcard mask</strong>, which is the inverse of the subnet mask. Example: <code>/24</code> becomes <code>0.0.0.255</code>. nftables can use CIDR notation directly, for example <code>ip saddr 192.168.10.0/24</code>.
+      </div>
+    </section>
+
+    <section class="outputs" aria-label="Generated outputs">
+      <article class="panel output-card">
+        <div class="output-head">
+          <h2>2. Cisco IOS extended ACL style output</h2>
+          <div>
+            <button class="secondary" data-copy="ciscoOut" type="button">Copy</button>
+            <button class="secondary" data-download="ciscoOut" data-filename="acl-cisco.txt" type="button">Download</button>
+          </div>
+        </div>
+        <textarea id="ciscoOut" class="codebox" readonly spellcheck="false"></textarea>
+      </article>
+
+      <article class="panel output-card">
+        <div class="output-head">
+          <h2>3. Debian/Linux nftables style output</h2>
+          <div>
+            <button class="secondary" data-copy="nftOut" type="button">Copy</button>
+            <button class="secondary" data-download="nftOut" data-filename="apply-nftables-clil.sh" type="button">Download</button>
+          </div>
+        </div>
+        <textarea id="nftOut" class="codebox" readonly spellcheck="false"></textarea>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+    const NL = String.fromCharCode(10);
+
+    const fields = [
+      "aclId", "seqStart", "seqStep", "action", "protocol", "portOperator",
+      "sources", "destination", "servicePreset", "port1", "port2", "nftTable",
+      "nftChain", "nftPolicy", "iface", "aclDirection", "remark", "namedAcl",
+      "includeRemark", "includeCiscoLog", "includeNftCounter", "includeNftLog", "includeNftDenyRest", "includeFinalDeny"
+    ];
+
+    const servicePorts = {
+      "22": "SSH", "25": "SMTP", "53": "DNS", "80": "HTTP", "110": "POP3",
+      "143": "IMAP", "443": "HTTPS", "3389": "RDP"
+    };
+
+    const scenarios = {
+      webAllow: {
+        aclId: "WEB_ONLY",
+        action: "permit",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "443",
+        port1: "443",
+        port2: "8443",
+        sources: `192.168.10.0/24
+192.168.20.15`,
+        destination: "172.16.1.10",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/0",
+        aclDirection: "in",
+        remark: "Allow HTTPS from LAN to the internal web server",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      subnetSshDeny: {
+        aclId: "BLOCK_GUEST_SSH",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "22",
+        port1: "22",
+        port2: "8443",
+        sources: "10.99.0.0/16",
+        destination: "172.16.50.20",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/0",
+        aclDirection: "in",
+        remark: "Deny SSH from the guest subnet to the administrative server",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      sshAllow: {
+        aclId: "ALLOW_ADMIN_SSH",
+        action: "permit",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "22",
+        port1: "22",
+        port2: "8443",
+        sources: "192.168.1.50",
+        destination: "172.16.50.20",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/1",
+        aclDirection: "in",
+        remark: "Allow SSH from the admin workstation to the server",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      internetDeny: {
+        aclId: "DENY_GUEST_INTERNET",
+        action: "deny",
+        protocol: "ip",
+        portOperator: "none",
+        servicePreset: "custom",
+        port1: "443",
+        port2: "8443",
+        sources: "10.99.0.0/16",
+        destination: "any",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/2",
+        aclDirection: "in",
+        remark: "Deny Internet access from the guest subnet",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      dnsAllow: {
+        aclId: "ALLOW_DNS",
+        action: "permit",
+        protocol: "udp",
+        portOperator: "eq",
+        servicePreset: "53",
+        port1: "53",
+        port2: "8443",
+        sources: "192.168.10.0/24",
+        destination: "172.16.1.53",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/0",
+        aclDirection: "in",
+        remark: "Allow DNS queries to the internal DNS server",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      icmpAllow: {
+        aclId: "ALLOW_IT_PING",
+        action: "permit",
+        protocol: "icmp",
+        portOperator: "none",
+        servicePreset: "custom",
+        port1: "443",
+        port2: "8443",
+        sources: "192.168.200.0/24",
+        destination: "172.16.0.0/16",
+        nftChain: "forward",
+        nftPolicy: "accept",
+        iface: "GigabitEthernet0/3",
+        aclDirection: "in",
+        remark: "Allow ICMP troubleshooting from the IT subnet",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      }
+    };
+
+    const pairExercisePresets = {
+      pairSshAllow: {
+        aclId: "PAIR_EX1_ALLOW_SSH",
+        action: "permit",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "22",
+        port1: "22",
+        port2: "8443",
+        sources: "10.0.22.10",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 1A - Allow SSH from partner to my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      pairSshDrop: {
+        aclId: "PAIR_EX1_DROP_SSH",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "22",
+        port1: "22",
+        port2: "8443",
+        sources: "any",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 1B - Drop SSH from everyone else to my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      pairHttpAllow: {
+        aclId: "PAIR_EX2_ALLOW_HTTP",
+        action: "permit",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "80",
+        port1: "80",
+        port2: "8443",
+        sources: "10.0.22.10",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 2A - Allow HTTP from partner to my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      pairHttpDrop: {
+        aclId: "PAIR_EX2_DROP_HTTP",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "80",
+        port1: "80",
+        port2: "8443",
+        sources: "10.0.22.0/24",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 2B - Drop HTTP from Computer Lab 2 subnet",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      pairBlockSshLab: {
+        aclId: "PAIR_EX3_BLOCK_SSH",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "22",
+        port1: "22",
+        port2: "8443",
+        sources: "10.0.22.0/24",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 3 - Keep HTTP reachable, block SSH from lab subnet",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      pairDenyHttpOut: {
+        aclId: "PAIR_EX4_DENY_HTTP_OUT",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "80",
+        port1: "80",
+        port2: "8443",
+        sources: "10.0.22.20",
+        destination: "any",
+        nftChain: "output",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "out",
+        remark: "Exercise 4A - Deny outbound HTTP from my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      pairDenyHttpsOut: {
+        aclId: "PAIR_EX4_DENY_HTTPS_OUT",
+        action: "deny",
+        protocol: "tcp",
+        portOperator: "eq",
+        servicePreset: "443",
+        port1: "443",
+        port2: "8443",
+        sources: "10.0.22.20",
+        destination: "any",
+        nftChain: "output",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "out",
+        remark: "Exercise 4B - Deny outbound HTTPS from my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      },
+      pairIcmpAllow: {
+        aclId: "PAIR_EX5_ALLOW_ICMP",
+        action: "permit",
+        protocol: "icmp",
+        portOperator: "none",
+        servicePreset: "custom",
+        port1: "443",
+        port2: "8443",
+        sources: "10.0.22.10",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 5A - Allow ICMP from partner to my VM",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: true,
+        includeFinalDeny: false
+      },
+      pairIcmpDrop: {
+        aclId: "PAIR_EX5_DROP_ICMP",
+        action: "deny",
+        protocol: "icmp",
+        portOperator: "none",
+        servicePreset: "custom",
+        port1: "443",
+        port2: "8443",
+        sources: "10.0.22.0/24",
+        destination: "10.0.22.20",
+        nftChain: "input",
+        nftPolicy: "accept",
+        iface: "",
+        aclDirection: "in",
+        remark: "Exercise 5B - Drop ICMP from Computer Lab 2 subnet",
+        includeCiscoLog: false,
+        includeNftCounter: false,
+        includeNftLog: false,
+        includeNftDenyRest: false,
+        includeFinalDeny: false
+      }
+    };
+
+    function value(id) {
+      const el = $(id);
+      if (!el) return "";
+      if (el.type === "checkbox") return el.checked;
+      return String(el.value || "").trim();
+    }
+
+    function setField(id, val) {
+      const el = $(id);
+      if (!el) return;
+      if (el.type === "checkbox") el.checked = Boolean(val);
+      else el.value = val;
+    }
+
+    function setDisabled(id, disabled) {
+      const el = $(id);
+      if (!el) return;
+      el.disabled = disabled;
+      el.setAttribute("aria-disabled", disabled ? "true" : "false");
+    }
+
+    function updateControlState() {
+      const protocol = value("protocol");
+      const isTransportProtocol = protocol === "tcp" || protocol === "udp";
+      const portOperator = $("portOperator");
+
+      if (!isTransportProtocol) {
+        if (portOperator.value !== "none") portOperator.dataset.previousValue = portOperator.value;
+        portOperator.value = "none";
+      } else if (portOperator.value === "none" && portOperator.dataset.previousValue) {
+        portOperator.value = portOperator.dataset.previousValue;
+      }
+
+      const usesLogicalPort = isTransportProtocol && value("portOperator") !== "none";
+      const usesPortRange = usesLogicalPort && value("portOperator") === "range";
+
+      setDisabled("portOperator", !isTransportProtocol);
+      setDisabled("servicePreset", !usesLogicalPort || usesPortRange);
+      setDisabled("port1", !usesLogicalPort);
+      setDisabled("port2", !usesPortRange);
+      setDisabled("seqStart", !value("namedAcl"));
+      setDisabled("seqStep", !value("namedAcl"));
+      setDisabled("remark", !value("includeRemark"));
+      setDisabled("aclDirection", value("iface") === "");
+    }
+
+    function showMessages(list) {
+      const box = $("messages");
+      if (!list.length) {
+        box.classList.remove("show");
+        box.innerHTML = "";
+        $("statusPill").textContent = "Syntax updated";
+        return;
+      }
+      box.classList.add("show");
+      box.innerHTML = "<strong>Check these points:</strong><ul>" + list.map(m => `<li>${escapeHtml(m)}</li>`).join("") + "</ul>";
+      $("statusPill").textContent = "Needs checking";
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function splitOnSpace(text) {
+      return String(text).split(" ").map(s => s.trim()).filter(Boolean);
+    }
+
+    function ipToInt(ip) {
+      const parts = String(ip).split(".").map(Number);
+      if (parts.length !== 4 || parts.some(n => !Number.isInteger(n) || n < 0 || n > 255)) return null;
+      return (((parts[0] << 24) >>> 0) + (parts[1] << 16) + (parts[2] << 8) + parts[3]) >>> 0;
+    }
+
+    function intToIp(num) {
+      return [24, 16, 8, 0].map(shift => (num >>> shift) & 255).join(".");
+    }
+
+    function isValidPort(n) {
+      const p = Number(n);
+      return Number.isInteger(p) && p >= 1 && p <= 65535;
+    }
+
+    function prefixToMask(prefix) {
+      if (prefix === 0) return 0;
+      return (0xffffffff << (32 - prefix)) >>> 0;
+    }
+
+    function prefixToWildcard(prefix) {
+      return intToIp((~prefixToMask(prefix)) >>> 0);
+    }
+
+    function wildcardToPrefix(wildcard) {
+      const w = ipToInt(wildcard);
+      if (w === null) return null;
+      const mask = (~w) >>> 0;
+      let seenZero = false;
+      let prefix = 0;
+      for (let i = 31; i >= 0; i--) {
+        const bit = (mask >>> i) & 1;
+        if (bit === 1 && seenZero) return null;
+        if (bit === 1) prefix++;
+        else seenZero = true;
+      }
+      return prefix;
+    }
+
+    function parseAddress(raw, label, warnings) {
+      const original = String(raw || "").trim();
+      const text = original.toLowerCase();
+
+      if (!text || text === "any" || text === "*" || text === "0.0.0.0/0") {
+        return { kind: "any", cisco: "any", nft: "", readable: "any" };
+      }
+
+      if (text.startsWith("host ")) {
+        return parseAddress(original.slice(5), label, warnings);
+      }
+
+      const spaceParts = splitOnSpace(original);
+      if (spaceParts.length === 2 && ipToInt(spaceParts[0]) !== null && ipToInt(spaceParts[1]) !== null) {
+        const ip = spaceParts[0];
+        const wildcard = spaceParts[1];
+        const prefix = wildcardToPrefix(wildcard);
+        if (prefix === null) {
+          warnings.push(`${label}: invalid wildcard format: ${original}`);
+          return null;
+        }
+        const mask = prefixToMask(prefix);
+        const network = intToIp(ipToInt(ip) & mask);
+        return {
+          kind: prefix === 32 ? "host" : "network",
+          cisco: prefix === 32 ? `host ${network}` : `${network} ${wildcard}`,
+          nft: prefix === 32 ? network : `${network}/${prefix}`,
+          readable: prefix === 32 ? network : `${network}/${prefix}`
+        };
+      }
+
+      const cidrParts = original.split("/");
+      const ip = cidrParts[0];
+      const prefix = cidrParts.length === 1 ? 32 : Number(cidrParts[1]);
+      const asInt = ipToInt(ip);
+
+      if (cidrParts.length > 2 || asInt === null || !Number.isInteger(prefix) || prefix < 0 || prefix > 32) {
+        warnings.push(`${label}: invalid IPv4/CIDR value: ${original}`);
+        return null;
+      }
+
+      const network = intToIp(asInt & prefixToMask(prefix));
+      const wildcard = prefixToWildcard(prefix);
+      const cisco = prefix === 32 ? `host ${ip}` : `${network} ${wildcard}`;
+      const nft = prefix === 32 ? ip : `${network}/${prefix}`;
+      return {
+        kind: prefix === 32 ? "host" : "network",
+        cisco,
+        nft,
+        readable: nft
+      };
+    }
+
+    function parseSources(warnings) {
+      const raw = value("sources");
+      const pieces = [];
+      raw.split(NL).forEach(line => {
+        line.split(",").forEach(part => {
+          part.split(";").forEach(item => {
+            const clean = item.trim();
+            if (clean) pieces.push(clean);
+          });
+        });
+      });
+      const list = pieces.length ? pieces : ["any"];
+      return list.map((item, i) => parseAddress(item, `Source ${i + 1}`, warnings)).filter(Boolean);
+    }
+
+    function buildPort(protocol, warnings) {
+      const op = value("portOperator");
+      const port1 = value("port1");
+      const port2 = value("port2");
+
+      if ((protocol !== "tcp" && protocol !== "udp") || op === "none") {
+        return { cisco: "", nft: "", note: "" };
+      }
+
+      if (!isValidPort(port1)) warnings.push("Port 1 is invalid: use a value from 1 to 65535.");
+      if (op === "range" && !isValidPort(port2)) warnings.push("Port 2 is invalid for a range: use a value from 1 to 65535.");
+
+      const p1 = Number(port1);
+      const p2 = Number(port2);
+      const name = servicePorts[String(p1)] ? `${servicePorts[String(p1)]}/${p1}` : String(p1);
+
+      if (op === "range") {
+        if (isValidPort(port1) && isValidPort(port2) && p1 > p2) warnings.push("In a range, Port 1 should be lower than or equal to Port 2.");
+        return {
+          cisco: `range ${p1} ${p2}`,
+          nft: `${protocol} dport ${p1}-${p2}`,
+          note: `ports ${p1}-${p2}`
+        };
+      }
+
+      const nftOp = { eq: "", neq: "!= ", lt: "< ", gt: "> " }[op] || "";
+      return {
+        cisco: `${op} ${p1}`,
+        nft: `${protocol} dport ${nftOp}${p1}`,
+        note: `${op} ${name}`
+      };
+    }
+
+    function nftAddressExpr(part, parsed) {
+      if (!parsed || parsed.kind === "any") return "";
+      return `${part} ${parsed.nft}`;
+    }
+
+    function protocolNftExpr(protocol) {
+      if (protocol === "icmp") return "ip protocol icmp";
+      return "";
+    }
+
+    function sanitizeNftIdentifier(str, fallback) {
+      const source = String(str || "").trim();
+      let cleaned = "";
+      for (const ch of source) {
+        const code = ch.charCodeAt(0);
+        const isDigit = code >= 48 && code <= 57;
+        const isUpper = code >= 65 && code <= 90;
+        const isLower = code >= 97 && code <= 122;
+        cleaned += isDigit || isUpper || isLower || ch === "_" ? ch : "_";
+      }
+      return cleaned || fallback;
+    }
+
+    function normalizeAclId(str) {
+      return splitOnSpace(str || "CLIL_ACL").join("_");
+    }
+
+    function buildOutputs() {
+      updateControlState();
+      const warnings = [];
+      const aclId = normalizeAclId(value("aclId"));
+      const seqStart = Number(value("seqStart") || 10);
+      const seqStep = Number(value("seqStep") || 10);
+      const action = value("action");
+      const verdict = action === "permit" ? "accept" : "drop";
+      const protocol = value("protocol");
+      const sources = parseSources(warnings);
+      const destination = parseAddress(value("destination"), "Destination", warnings) || parseAddress("any", "Destination", warnings);
+      const port = buildPort(protocol, warnings);
+      const namedAcl = value("namedAcl");
+      const includeRemark = value("includeRemark");
+      const includeCiscoLog = value("includeCiscoLog");
+      const includeNftCounter = value("includeNftCounter");
+      const includeNftLog = value("includeNftLog");
+      const includeNftDenyRest = value("includeNftDenyRest");
+      const includeFinalDeny = value("includeFinalDeny");
+      const remark = value("remark");
+      const iface = value("iface");
+      const aclDirection = value("aclDirection");
+      const table = sanitizeNftIdentifier(value("nftTable"), "clil_acl");
+      const chain = sanitizeNftIdentifier(value("nftChain"), "forward");
+      const policy = value("nftPolicy") === "drop" ? "drop" : "accept";
+
+      if (!Number.isInteger(seqStart) || seqStart < 1) warnings.push("First sequence is invalid.");
+      if (!Number.isInteger(seqStep) || seqStep < 1) warnings.push("Sequence step is invalid.");
+      if (!sources.length) warnings.push("There are no valid sources: 'any' will be used.");
+
+      const cisco = [];
+      if (namedAcl) {
+        cisco.push("configure terminal");
+        cisco.push(`ip access-list extended ${aclId}`);
+        if (includeRemark && remark) cisco.push(` remark ${remark}`);
+        sources.forEach((src, index) => {
+          const seq = seqStart + (index * seqStep);
+          const portPart = port.cisco ? ` ${port.cisco}` : "";
+          const logPart = includeCiscoLog ? " log" : "";
+          cisco.push(` ${seq} ${action} ${protocol} ${src.cisco} ${destination.cisco}${portPart}${logPart}`);
+        });
+        if (includeFinalDeny) {
+          const seq = seqStart + (sources.length * seqStep);
+          cisco.push(` ${seq} deny ip any any${includeCiscoLog ? " log" : ""}`);
+        }
+        cisco.push("exit");
+      } else {
+        cisco.push("configure terminal");
+        if (includeRemark && remark) cisco.push(`! ${remark}`);
+        sources.forEach(src => {
+          const portPart = port.cisco ? ` ${port.cisco}` : "";
+          const logPart = includeCiscoLog ? " log" : "";
+          cisco.push(`access-list ${aclId} ${action} ${protocol} ${src.cisco} ${destination.cisco}${portPart}${logPart}`);
+        });
+        if (includeFinalDeny) cisco.push(`access-list ${aclId} deny ip any any${includeCiscoLog ? " log" : ""}`);
+      }
+
+      if (iface) {
+        cisco.push("!");
+        cisco.push(`interface ${iface}`);
+        cisco.push(` ip access-group ${aclId} ${aclDirection}`);
+        cisco.push("exit");
+      }
+      cisco.push("end");
+      cisco.push("write memory");
+
+      const nft = [];
+      nft.push("#!/usr/sbin/nft -f");
+      nft.push("");
+      nft.push("# Warning: flush ruleset removes existing nftables rules.");
+      nft.push("# For a lab it is convenient; in production, consider using a dedicated table only.");
+      nft.push("flush ruleset");
+      nft.push("");
+      nft.push(`table inet ${table} {`);
+      nft.push(`  chain ${chain} {`);
+      nft.push(`    type filter hook ${chain} priority 0; policy ${policy};`);
+      nft.push("");
+      if (includeRemark && remark) nft.push(`    # ${remark}`);
+
+      sources.forEach(src => {
+        const expressions = [
+          nftAddressExpr("ip saddr", src),
+          nftAddressExpr("ip daddr", destination),
+          protocolNftExpr(protocol),
+          port.nft,
+          includeNftCounter ? "counter" : "",
+          includeNftLog ? `log prefix "${table}: "` : "",
+          verdict
+        ].filter(Boolean);
+        nft.push(`    ${expressions.join(" ")}`);
+      });
+
+      if (includeNftDenyRest && action === "permit") {
+        if (includeRemark && remark) nft.push("    # Drop everything else for the same service/scope");
+        const restExpressions = [
+          nftAddressExpr("ip daddr", destination),
+          protocolNftExpr(protocol),
+          port.nft,
+          includeNftCounter ? "counter" : "",
+          includeNftLog ? `log prefix "${table}: "` : "",
+          "drop"
+        ].filter(Boolean);
+        nft.push(`    ${restExpressions.join(" ")}`);
+      }
+
+      nft.push("  }");
+      nft.push("}");
+
+      const nftBash = [];
+      nftBash.push("cat <<'EOF' > nftables-clil.conf");
+      nft.forEach(line => nftBash.push(line));
+      nftBash.push("EOF");
+      nftBash.push("");
+      nftBash.push("sudo nft -f nftables-clil.conf");
+      nftBash.push("sudo nft list ruleset");
+
+      $("ciscoOut").value = cisco.join(NL);
+      $("nftOut").value = nftBash.join(NL);
+      showMessages(warnings);
+    }
+
+    function copyOutput(id) {
+      const text = $(id).value;
+      navigator.clipboard.writeText(text).then(() => {
+        $("statusPill").textContent = "Copied to clipboard";
+      }).catch(() => {
+        $(id).focus();
+        $(id).select();
+        document.execCommand("copy");
+        $("statusPill").textContent = "Copied";
+      });
+    }
+
+    function downloadOutput(id, filename) {
+      const blob = new Blob([$(id).value], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadScenario(key) {
+      const data = scenarios[key] || scenarios.webAllow;
+      setField("includeNftDenyRest", false);
+      Object.entries(data).forEach(([id, val]) => setField(id, val));
+      setField("includeNftCounter", false);
+      setField("includeNftLog", false);
+      buildOutputs();
+      $("statusPill").textContent = "Preset loaded";
+    }
+
+    function loadPairExercisePreset(key) {
+      const data = pairExercisePresets[key] || pairExercisePresets.pairSshAllow;
+      setField("includeNftDenyRest", false);
+      Object.entries(data).forEach(([id, val]) => setField(id, val));
+      setField("includeNftCounter", false);
+      setField("includeNftLog", false);
+      buildOutputs();
+      $("statusPill").textContent = "Pair preset loaded";
+    }
+
+    $("generateBtn").addEventListener("click", buildOutputs);
+    $("loadPresetBtn").addEventListener("click", () => loadScenario(value("scenarioPreset")));
+    $("loadPairPresetBtn").addEventListener("click", () => loadPairExercisePreset(value("pairExercisePreset")));
+    $("clearBtn").addEventListener("click", () => { $("sources").value = ""; buildOutputs(); });
+
+    fields.forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.addEventListener("input", buildOutputs);
+      el.addEventListener("change", buildOutputs);
+    });
+
+    $("servicePreset").addEventListener("change", () => {
+      if (!$("servicePreset").disabled && value("servicePreset") !== "custom") $("port1").value = value("servicePreset");
+      buildOutputs();
+    });
+
+    document.querySelectorAll("[data-copy]").forEach(btn => {
+      btn.addEventListener("click", () => copyOutput(btn.dataset.copy));
+    });
+
+    document.querySelectorAll("[data-download]").forEach(btn => {
+      btn.addEventListener("click", () => downloadOutput(btn.dataset.download, btn.dataset.filename));
+    });
+
+    buildOutputs();
+  </script>
+</body>
+</html>
