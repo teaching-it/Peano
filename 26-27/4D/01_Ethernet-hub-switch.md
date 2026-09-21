@@ -1,17 +1,4 @@
-# Ethernet: hub, switch e Auto-Negotiation
-
-## Dispensa per la classe quarta
-
-## Obiettivi di apprendimento
-
-Al termine della lezione lo studente dovrebbe essere in grado di:
-
-- distinguere un **hub** da uno **switch**;
-- spiegare che cosa sono velocità, duplex e collision domain;
-- descrivere il funzionamento dell'**Auto-Negotiation**;
-- prevedere cosa accade collegando dispositivi Ethernet con capacità diverse;
-- comprendere perché uno switch può collegare porte a velocità differenti;
-- riconoscere alcune semplificazioni scorrette diffuse sull'argomento.
+# 01 - Ethernet: hub, switch e Auto-Negotiation
 
 ---
 
@@ -186,7 +173,7 @@ A seconda della tecnologia, può contribuire a definire:
 - velocità del collegamento;
 - modalità half-duplex o full-duplex;
 - parametri di controllo di flusso;
-- per 1000BASE-T, anche la relazione master/slave necessaria al funzionamento dei PHY.
+- per 1000BASE-T, anche l'assegnazione dei ruoli master/slave ai due estremi del collegamento.
 
 Per Ethernet a 10 e 100 Mbit/s su doppino vengono impiegati segnali chiamati **FLP — Fast Link Pulses** per comunicare le capacità.
 
@@ -204,7 +191,7 @@ Il processo può essere riassunto così:
 ```text
 Collegamento del cavo
         ↓
-Scambio delle capacità dei PHY
+Scambio delle capacità tra i due dispositivi collegati
         ↓
 Scelta della migliore modalità comune
         ↓
