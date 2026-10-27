@@ -2,7 +2,7 @@
 
 ## **Obiettivo**
 
-A partire da un budget assegnato (**750 euro** o **1000 euro**), seleziona i componenti hardware necessari per assemblare una configurazione PC (build). Durante la scelta dei componenti, presta attenzione ai seguenti aspetti:
+A partire da un budget assegnato (**1000 euro**) e alla destinazione d'uso concordata (**gaming**), seleziona i componenti hardware necessari per assemblare una configurazione PC (build). Durante la scelta dei componenti, presta attenzione ai seguenti aspetti:
 
 ---
 
