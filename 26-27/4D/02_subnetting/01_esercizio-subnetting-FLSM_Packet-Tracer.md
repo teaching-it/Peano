@@ -5,7 +5,7 @@ In **Cisco Packet Tracer**, realizzare una rete che rappresenti **almeno 2 delle
 Data la rete **192.168.0.0/24**, suddividerla in quattro sottoreti (subnet) utilizzando la tecnica **FLSM (Fixed Length Subnet Mask)**: tutte le subnet devono avere la stessa subnet mask e la stessa capienza, cioè lo stesso numero massimo di indirizzi IP assegnabili agli host, anche se le esigenze sono differenti:
 
 - **Subnet 1:** 45 host
-- **Subnet 2:** 28 host
+- **Subnet 2:** 38 host
 - **Subnet 3:** 54 host
 - **Subnet 4:** 60 host
 
